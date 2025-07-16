@@ -7,16 +7,18 @@ import MyButton from "./UI/button/MyButton.tsx";
 interface PostListProps {
     posts: Post[];
     removePost: (id: number) => void;
+    updatePost: (id: number, updatedPost: Post) => void;
+    updateStatus: (id: number, updatedPost: Post) => void;
 }
 
-const PostList = ({posts, removePost}: PostListProps) => {
+const PostList = ({posts, removePost, handleAddPost, updatePost, updateStatus}: PostListProps) => {
 
     const [selecterSort, setSelectedSort] = useState('') //сортировка
 
     const [searchQuery, setSearchQuery] = useState('') //поиск
 
     const sortedPosts = useMemo(() => {
-        if (selecterSort){
+        if (selecterSort) {
             return [...posts].sort((a, b) => a[selecterSort].localeCompare(b[selecterSort]))
         }
         return posts;
@@ -40,7 +42,7 @@ const PostList = ({posts, removePost}: PostListProps) => {
                     defaultValue='Сортировка'
                     options={[
                         {value: 'old', name: 'Старые'},
-                        {value: 'new', name: 'Новые'},
+                        {value: 'data', name: 'Новые'},
                         {value: 'title', name: 'По названию'},
                         {value: 'text', name: 'По описанию'},
                     ]}>
@@ -57,11 +59,12 @@ const PostList = ({posts, removePost}: PostListProps) => {
             </div>
             {sortedAndSearchPosts.length !== 0 ? (
                 sortedAndSearchPosts.map((post, count) => (
-                    <PostItem removePost={removePost} key={post.id} {...post} index={count}/>
+                    <PostItem handleAddPost={handleAddPost} removePost={removePost} removePost={removePost} updateStatus={updateStatus}
+                              updatePost={updatePost} key={post.id} {...post} index={count}/>
                 ))
             ) : (
                 <div className="p-10 place-self-center">
-                    <h1>Пусто...</h1>
+                    <h1>Задачи отсутствуют...</h1>
                 </div>
             )}
         </div>

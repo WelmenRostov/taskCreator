@@ -4,5 +4,5 @@ export interface Post {
     title: string,
     text: string,
     data: Date,
-    status: 'pending' | 'fulfilled' | 'rejected';
+    status: 'pending' | 'fulfilled' | 'rejected' | 'editor';
 }
