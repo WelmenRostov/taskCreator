@@ -1,7 +1,8 @@
-import React, { FormEvent, useRef } from 'react';
+import {type FormEvent, useRef } from 'react';
 import MyButton from "./UI/button/MyButton.tsx";
 import clsx from "clsx";
 import type { Post } from "../types/types.tsx";
+import MyTextarea from "./UI/textarear/MyTextarea";
 
 type AddPostProps = {
     modal: boolean;
@@ -59,9 +60,10 @@ const TaskForm = ({ modal, setModal, handleAddPost }: AddPostProps) => {
                     type="text"
                     className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Введите название..."
+                    maxLength={35}
                 />
                 <h2 className="text-2xl font-semibold text-center mb-4">Содержание:</h2>
-                <textarea
+                <MyTextarea
                     size = 'base'
                     ref={textareaRef}
                     name="text"
@@ -69,11 +71,11 @@ const TaskForm = ({ modal, setModal, handleAddPost }: AddPostProps) => {
                     placeholder="Введите описание..."
                     rows={1}
                     onInput={adjustTextareaHeight} // Автоматическое изменение высоты
-                ></textarea>
+                ></MyTextarea>
                 <MyButton
                     type="submit"
                     color="blue"
-                    className='w-[160px] item-center justify-center top-1/2 left-1/2 transform translate-x-20 translate-y-1'>
+                    additionalStyle='w-[160px] item-center justify-center top-1/2 left-1/2 transform translate-x-20 translate-y-1'>
                     Отправить
                 </MyButton>
             </div>

@@ -1,40 +1,50 @@
-import React, {useRef} from 'react';
-import clsx from "clsx";
+import React, {useRef, useEffect} from 'react';
+import clsx from 'clsx';
 
-interface MyTextarea extends HTMLTextAreaElement{
-
-    size?: 'small' | 'medium' | 'large'; // Размер кнопки
-    name:string,
-    placeholder:string
-    text:string,
-    className?:string
-
+interface MyTextareaProps {
+    size?: 'small' | 'medium' | 'large' | 'editor' | 'base',
+    name?: string,
+    text?: string,
+    type?: string,
+    placeholder?: string,
+    value?: string,
+    className?: string,
+    onChange?: React.ChangeEventHandler<HTMLTextAreaElement>,
+    ref?: React.RefObject<HTMLTextAreaElement | null>,
+    rows?: number,
+    onInput?: () => void
 }
-const MyTextarea = ({name, placeholder, text, className, size}:MyTextarea) => {
 
-    
+const MyTextarea = ({name, placeholder, value, className, size, onChange, ...props}: MyTextareaProps) => {
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
     const textareaClasses = clsx(
         '',
         {
             'w-full': size === 'editor',
-            'w-min-h-[50px] w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-hidden resize-none': size === 'base',
+            'w-min-h-[50px] w-full mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-hidden resize-none': size === 'base',
         },
         className
     );
 
-    const textareaRef = useRef<MyTextarea | null>(null);
-
-    // Функция для изменения высоты textarea по мере ввода
+    // Функция для корректной подгонки высоты
     const adjustTextareaHeight = () => {
-        if (textareaRef.current) {
+        if (textareaRef.current?.style) {
+            // Сбросить высоту в auto перед расчётом
             if ("style" in textareaRef.current) {
                 textareaRef.current.style.height = 'auto';
             }
+            // Установить высоту равной scrollHeight (полная высота содержимого)
             if ("style" in textareaRef.current) {
-                textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+                textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px` ;
             }
         }
     };
+
+    // Вызываем adjustTextareaHeight при изменении value
+    useEffect(() => {
+        adjustTextareaHeight();
+    }, [value]); // Вызываем, когда изменяется value
 
     return (
         <textarea
@@ -42,10 +52,11 @@ const MyTextarea = ({name, placeholder, text, className, size}:MyTextarea) => {
             name={name}
             className={textareaClasses}
             placeholder={placeholder}
-            rows={1}
-            defaultValue={text}
-            onInput={adjustTextareaHeight} // Автоматическое изменение высоты
-        ></textarea>
+            value={value} // Используем value для контролируемого компонента
+            onChange={onChange} // Обрабатываем изменение текста
+            onInput={adjustTextareaHeight} // Растягиваем textarea по мере ввода
+            {...props}
+        />
     );
 };
 

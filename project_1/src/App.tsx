@@ -5,9 +5,18 @@ import PostList from "./components/PostList.tsx";
 import type {Post} from "./types/types.tsx";
 
 export const App: React.FC = () => {
+
+    const storedPosts = JSON.parse(localStorage.getItem('posts') as string).map((post: {
+        data: string | number | Date;
+    }) => {
+        return {
+            ...post, data: new Date(post.data)
+        }
+    })
+
     const [modal, setModal] = useState(false)
 
-    const postsState: Post[] = [
+    const initialPosts: Post[] = [
         {
             id: 1,
             count: 1,
@@ -52,11 +61,17 @@ export const App: React.FC = () => {
             status: 'pending'
         },]
 
-    const [posts, setPosts] = useState<Post[]>(postsState);
+    const [posts, setPosts] = useState<Post[]>(storedPosts || initialPosts);
+
+
+    useEffect(() => {
+        localStorage.setItem('posts', JSON.stringify(posts))
+    }, [posts]);
 
 
     const updatePost = (id: number, updatedPost: Post) => {
         setPosts(prevPosts => {
+
             return prevPosts.map(post =>
                 post.id === id ? updatedPost : post
             );
@@ -66,7 +81,7 @@ export const App: React.FC = () => {
     const updateStatus = (id: number, updatedPost: Post) => {
         setPosts(prevPosts => {
             return prevPosts.map(post =>
-                post.id === id ? { ...post, status: updatedPost.status } : post
+                post.id === id ? {...post, status: updatedPost.status} : post
             );
         });
     };
@@ -82,15 +97,14 @@ export const App: React.FC = () => {
         setPosts(posts.filter(p => p.id !== id));
     };
 
-    useEffect(() => {
-        console.log('Posts changed:', posts);
-    }, [posts]);
-
+    console.log('Posts changed:', posts);
     return (
         <>
-            <Navigation setVisible={setModal}/>
-            <PostList posts={posts} removePost={removePost} updatePost={updatePost} updateStatus={updateStatus}/>
-            <TaskForm handleAddPost={handleAddPost} modal={modal} setModal={setModal}/>
+            <div className={'max-w-[1074px] m-auto'}>
+                <Navigation setVisible={setModal}/>
+                <PostList posts={posts} removePost={removePost} updatePost={updatePost} updateStatus={updateStatus}/>
+                <TaskForm handleAddPost={handleAddPost} modal={modal} setModal={setModal}/>
+            </div>
         </>
     );
 };

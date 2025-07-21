@@ -1,8 +1,8 @@
-import React, {useMemo, useState} from 'react';
-import {PostItem} from './PostItem.tsx';
+import {useMemo, useState, type SetStateAction} from 'react';
 import type {Post} from "../types/types.tsx";
 import MySelect from "./UI/select/MySelect.tsx";
 import MyButton from "./UI/button/MyButton.tsx";
+import {PostItem} from "./PostItem/PostItem";
 
 interface PostListProps {
     posts: Post[];
@@ -11,33 +11,45 @@ interface PostListProps {
     updateStatus: (id: number, updatedPost: Post) => void;
 }
 
-const PostList = ({posts, removePost, handleAddPost, updatePost, updateStatus}: PostListProps) => {
+const PostList = ({posts, removePost, updatePost, updateStatus}: PostListProps) => {
 
-    const [selecterSort, setSelectedSort] = useState('') //сортировка
+    const [selectedSort, setSelectedSort] = useState('')
 
-    const [searchQuery, setSearchQuery] = useState('') //поиск
+    const [searchQuery, setSearchQuery] = useState('')
 
     const sortedPosts = useMemo(() => {
-        if (selecterSort) {
-            return [...posts].sort((a, b) => a[selecterSort].localeCompare(b[selecterSort]))
-        }
-        return posts;
-    }, [selecterSort, posts])
+        const data = {
+            ['text']: [...posts].sort((a, b) =>
+                a.text.localeCompare(b.text)
+            ),
+            ['title']: [...posts].sort((a, b) =>
+                a.title.localeCompare(b.title)
+            ),
+            ['data']: [...posts].sort((a, b) =>
+                +(b.data) - (+(a.data))
+            ),
+            ['old']: [...posts].sort((a, b) =>
+                +(a.data) - +(b.data)
+            ),
+            ['']: posts
+        };
+        return data[selectedSort as keyof typeof data];
+    }, [selectedSort, posts, searchQuery]);
 
     const sortedAndSearchPosts = useMemo(() => {
-        return sortedPosts.filter(post => post.title.toLowerCase().includes(searchQuery.toLowerCase()) || post.text.toLowerCase().includes(searchQuery.toLowerCase()))
+        return sortedPosts.filter((post: { title: string; text: string; }) => post.title.toLowerCase().includes(searchQuery.toLowerCase()) || post.text.toLowerCase().includes(searchQuery.toLowerCase()))
     }, [searchQuery, sortedPosts])
-    const sortPosts = (sort) => {
+    const sortPosts = (sort: SetStateAction<string>) => {
         setSelectedSort(sort)
     }
 
     return (
         <div
-            className="relative bg-indigo-500 shadow-lg shadow-indigo-500/50 border-2 border-indigo-600 rounded-[1vw] m-[30px] pl-3 pr-2 outline-black/5 dark:bg-gray-800 bg-opacity-10 h-auto w-auto">
+            className="relative bg-indigo-500 shadow-lg shadow-indigo-500/50 border-2 border-indigo-600 rounded-[1vw] m-[30px] pl-3 pr-2 outline-black/5 bg- dark:bg-gray-800 bg-opacity-10 h-auto w-auto">
 
             <div className="flex justify-between items-center">
                 <MySelect
-                    value={selecterSort}
+                    value={selectedSort}
                     onChange={sortPosts}
                     defaultValue='Сортировка'
                     options={[
@@ -54,12 +66,12 @@ const PostList = ({posts, removePost, handleAddPost, updatePost, updateStatus}: 
                         placeholder="Поиск..."
                         className="min-w-[200] border-2 border-indigo-600 rounded-[1vw] p-2 -mt-[100px] bg-indigo-800"
                     />
-                    <MyButton className="m-2">Поиск</MyButton>
+                    <MyButton additionalStyle="m-2">Поиск</MyButton>
                 </div>
             </div>
             {sortedAndSearchPosts.length !== 0 ? (
-                sortedAndSearchPosts.map((post, count) => (
-                    <PostItem handleAddPost={handleAddPost} removePost={removePost} removePost={removePost} updateStatus={updateStatus}
+                sortedAndSearchPosts.map((post, count: number) => (
+                    <PostItem removePost={removePost} updateStatus={updateStatus}
                               updatePost={updatePost} key={post.id} {...post} index={count}/>
                 ))
             ) : (
