@@ -1,18 +1,11 @@
 import {useMemo, useState, type SetStateAction} from 'react';
-import type {Post} from "../types/types.tsx";
 import MySelect from "./UI/select/MySelect.tsx";
 import MyButton from "./UI/button/MyButton.tsx";
 import {PostItem} from "./PostItem/PostItem";
+import {usePostContext} from "../context/usePostContext";
 
-interface PostListProps {
-    posts: Post[];
-    removePost: (id: number) => void;
-    updatePost: (id: number, updatedPost: Post) => void;
-    updateStatus: (id: number, updatedPost: Post) => void;
-}
-
-const PostList = ({posts, removePost, updatePost, updateStatus}: PostListProps) => {
-
+const PostList = () => {
+    const {posts, removePost, updatePost, updateStatus} = usePostContext()
     const [selectedSort, setSelectedSort] = useState('')
 
     const [searchQuery, setSearchQuery] = useState('')

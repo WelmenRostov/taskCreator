@@ -1,17 +1,11 @@
 import {type FormEvent, useRef } from 'react';
 import MyButton from "./UI/button/MyButton.tsx";
 import clsx from "clsx";
-import type { Post } from "../types/types.tsx";
 import MyTextarea from "./UI/textarear/MyTextarea";
+import {usePostContext} from "../context/usePostContext";
 
-type AddPostProps = {
-    modal: boolean;
-    setModal: (modal: boolean) => void;
-    handleAddPost: (post: Post) => void;
-};
-
-const TaskForm = ({ modal, setModal, handleAddPost }: AddPostProps) => {
-
+const TaskForm = () => {
+    const {modal, setModal, handleAddPost } = usePostContext();
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
     // Функция для изменения высоты textarea по мере ввода
