@@ -4,7 +4,7 @@ export interface Post {
     title: string,
     text: string,
     data: Date,
-    status: 'pending' | 'fulfilled' | 'rejected' | 'editor';
+        status: 'pending' | 'fulfilled' | 'rejected' | 'editor';
 }
 /**
  * Интерфейс значений контекста задач
