@@ -44,6 +44,7 @@ const TaskForm = () => {
       data: new Date(),
       status: 'pending',
       id: +new Date(),
+      editable: false,
     });
     e.preventDefault();
     title.value = '';

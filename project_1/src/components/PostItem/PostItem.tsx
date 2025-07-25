@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import PostItemEditor from './PostItemEditor';
 import type { Post } from '../../types/types';
 import PostItemPending from './PostItemPending';
 import PostItemfulFilled from './PostItemFulfild';
 import PostItemRejected from './PostItemRejected';
+import { usePostItem } from './hooks/usePostItem';
 
 interface Props extends Post {
   index: number;
@@ -13,105 +13,71 @@ interface Props extends Post {
 }
 
 export const PostItem = (props: Props) => {
-  const { id, data, text, title, index, removePost, status, updatePost, updateStatus } = props;
-  const [editableTitle, setEditableTitle] = useState(title);
-  const [editableText, setEditableText] = useState(text);
-  console.log('editableTitle', editableTitle);
+  const { id, data, text, title, index, editable, removePost, status } = props;
+  const {
+    handleSetEditableTitle,
+    handleSetEditableText,
+    handleNoSave,
+    handleSave,
+    fulfilledStatus,
+    rejectedStatus,
+    recoverStatus,
+    changeStatus,
+    editableTitle,
+    editableText,
+  } = usePostItem(props);
 
-  const changeStatus = () => {
-    const updatedPost: Post = {
-      id,
-      title,
-      text,
-      data,
-      status: 'editor',
-    };
-    updateStatus(id, updatedPost);
-  };
-  const fulfilledStatus = () => {
-    const updatedPost: Post = {
-      id,
-      title,
-      text,
-      data,
-      status: 'fulfilled',
-    };
-    updateStatus(id, updatedPost);
-  };
-  const handleSave = () => {
-    const updatedPost: Post = {
-      id,
-      title: editableTitle,
-      text: editableText,
-      data,
-      status: 'pending',
-    };
-    updatePost(id, updatedPost);
-  };
+  console.log('!status', status, title);
 
-  const handleNoSave = () => {
-    const updatedPost: Post = {
-      id,
-      title,
-      text,
-      data,
-      status: 'pending',
-    };
-    updatePost(id, updatedPost);
-  };
-
-  const visibles = 'vse';
-  if (visibles == 'vse') {
-    return (
-      <>
-        {status == 'editor' && (
-          <PostItemEditor
-            handleSave={handleSave}
-            handleNoSave={handleNoSave}
-            setEditableText={setEditableText}
-            setEditableTitle={setEditableTitle}
-            editableTitle={editableTitle}
-            editableText={editableText}
-            {...props}
-          />
-        )}
-        {status == 'fulfilled' && (
-          <PostItemfulFilled
-            fulfilledStatus={fulfilledStatus}
-            changeStatus={changeStatus}
-            index={index}
-            removePost={removePost}
-            text={text}
-            data={data}
-            id={id}
-            title={title}
-          />
-        )}
-        {status == 'pending' && (
-          <PostItemPending
-            fulfilledStatus={fulfilledStatus}
-            changeStatus={changeStatus}
-            index={index}
-            removePost={removePost}
-            text={text}
-            data={data}
-            id={id}
-            title={title}
-          />
-        )}
-        {status == 'rejected' && (
-          <PostItemRejected
-            fulfilledStatus={fulfilledStatus}
-            changeStatus={changeStatus}
-            index={index}
-            removePost={removePost}
-            text={text}
-            data={data}
-            id={id}
-            title={title}
-          />
-        )}
-      </>
-    );
-  }
+  return (
+    <>
+      {editable && (
+        <PostItemEditor
+          handleSave={handleSave}
+          handleNoSave={handleNoSave}
+          handleSetEditableText={handleSetEditableText}
+          handleSetEditableTitle={handleSetEditableTitle}
+          editableTitle={editableTitle}
+          editableText={editableText}
+          {...props}
+        />
+      )}
+      {status == 'pending' && !editable && (
+        <PostItemPending
+          fulfilledStatus={fulfilledStatus}
+          changeStatus={changeStatus}
+          index={index}
+          rejectedStatus={rejectedStatus}
+          text={text}
+          data={data}
+          id={id}
+          title={title}
+        />
+      )}
+      {status == 'fulfilled' && (
+        <PostItemfulFilled
+          fulfilledStatus={fulfilledStatus}
+          changeStatus={changeStatus}
+          index={index}
+          removePost={removePost}
+          text={text}
+          data={data}
+          id={id}
+          title={title}
+        />
+      )}
+      {status == 'rejected' && (
+        <PostItemRejected
+          fulfilledStatus={fulfilledStatus}
+          changeStatus={changeStatus}
+          index={index}
+          recoverStatus={recoverStatus}
+          text={text}
+          data={data}
+          id={id}
+          title={title}
+        />
+      )}
+    </>
+  );
 };

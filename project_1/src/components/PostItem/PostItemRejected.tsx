@@ -2,15 +2,15 @@ import MyButton from '../UI/button/MyButton';
 import type { Post } from '../../types/types';
 
 interface Props extends Omit<Post, 'status'> {
-  removePost: (index: number) => void;
+  recoverStatus: () => void;
   changeStatus: () => void;
   fulfilledStatus: () => void;
   index: number;
 }
 
-const PostItemPending = ({ id, title, text, data, index, removePost }: Props) => {
+const PostItemPending = ({ id, title, text, data, index, recoverStatus }: Props) => {
   return (
-    <form
+    <div
       key={id}
       className={
         'bg-red-600 shadow-lg shadow-red-500/50 border-2 border-red-600 rounded-[1vw] mb-5 p-5 outline-black/5 dark:bg-red-950 bg-opacity-10 overflow-hidden resize-none'
@@ -27,7 +27,7 @@ const PostItemPending = ({ id, title, text, data, index, removePost }: Props) =>
         {text}
       </p>
       <div className={'grid grid-flow-row-dense grid-cols-1 grid-rows-1'}>
-        <MyButton className={'m-2 col-end-4 row-end-1'} onClick={() => removePost(id)}>
+        <MyButton className={'m-2 col-end-4 row-end-1'} onClick={recoverStatus}>
           Восстановить
         </MyButton>
         <p className={'mr-2 col-end-4 row-end-3'}>
@@ -39,7 +39,7 @@ const PostItemPending = ({ id, title, text, data, index, removePost }: Props) =>
             data.toDateString()}
         </p>
       </div>
-    </form>
+    </div>
   );
 };
 

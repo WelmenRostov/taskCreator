@@ -1,5 +1,5 @@
 import { type FC, type ReactNode, useEffect, useState } from 'react';
-import type { Post } from '../types/types';
+import type { Post, TStatus } from '../types/types';
 import { PostContext } from './usePostContext';
 
 export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -20,7 +20,6 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
       return null;
     }
   })();
-
   const defaultPosts: Post[] = [
     {
       id: 1,
@@ -29,6 +28,7 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
       text: 'Поле ввода для текста задачи.\nКнопка "Добавить", которая добавляет задачу в список.',
       data: new Date(10000),
       status: 'pending',
+      editable: false,
     },
     {
       id: 2,
@@ -37,6 +37,7 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
       text: 'Список задач с возможностью отметить задачу как выполненную.\nВозможность удалить задачу из списка.',
       data: new Date(300000),
       status: 'pending',
+      editable: false,
     },
     {
       id: 3,
@@ -44,29 +45,34 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
       title: 'Редактирование задачи',
       text: 'Добавьте кнопку "Редактировать" для каждой задачи.\nПри нажатии на кнопку открывается форма редактирования текста задачи.',
       data: new Date(600000),
-      status: 'editor',
+      status: 'pending',
+      editable: false,
     },
     {
       id: 4,
       count: 4,
       title: 'Сохранение задач',
-      text: 'Бетта',
+      text: 'Задачи должны сохраняться в localStorage и восстанавливаться при перезагрузке страницы.',
       data: new Date(900000),
       status: 'pending',
+      editable: false,
     },
     {
       id: 5,
       count: 5,
       title: 'Гамма',
-      text: 'Задачи должны сохраняться в localStorage и восстанавливаться при перезагрузке страницы.',
+      text: 'Тестовая для удаления. Задачи удаляются',
       data: new Date(1200000),
       status: 'pending',
+      editable: false,
     },
   ];
 
   // 🔧 Состояния
   const [posts, setPosts] = useState<Post[]>(storedPosts || defaultPosts);
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>(storedPosts || defaultPosts);
   const [modal, setModal] = useState<boolean>(false);
+  const [status, setStatus] = useState<TStatus>('pending');
 
   useEffect(() => {
     localStorage.setItem('posts', JSON.stringify(posts));
@@ -101,10 +107,33 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setPosts((prev) => prev.filter((p) => p.id !== id));
   };
 
+  const handleStatus = (status: TStatus) => {
+    setStatus(status);
+
+    // localStorage.setItem('posts', JSON.stringify(filteredPosts));
+  };
+
+  useEffect(() => {
+    const arrayFilteredPosts = posts.filter((post) => {
+      if (status === 'pending') {
+        return post.status === 'pending';
+      }
+      if (status === 'fulfilled') {
+        return post.status === 'fulfilled';
+      }
+      if (status === 'rejected') {
+        return post.status === 'rejected';
+      }
+      return true;
+    });
+
+    setFilteredPosts(arrayFilteredPosts);
+  }, [posts, status]);
+
   return (
     <PostContext.Provider
       value={{
-        posts,
+        posts: filteredPosts,
         modal,
         setModal,
         handleSave,
@@ -112,6 +141,8 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
         removePost,
         updatePost,
         updateStatus,
+        handleStatus,
+        status,
       }}
     >
       {children}

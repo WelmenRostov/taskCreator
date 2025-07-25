@@ -2,15 +2,16 @@ import MyButton from '../UI/button/MyButton';
 import type { Post } from '../../types/types';
 
 interface Props extends Omit<Post, 'status'> {
-  removePost: (index: number) => void;
+  // removePost: (index: number) => void;
   changeStatus: () => void;
   fulfilledStatus: () => void;
+  rejectedStatus: () => void;
   index: number;
 }
 
-const PostItemPending = ({ fulfilledStatus, id, title, text, data, changeStatus, index, removePost }: Props) => {
+const PostItemPending = ({ fulfilledStatus, id, title, text, data, changeStatus, index, rejectedStatus }: Props) => {
   return (
-    <form
+    <div
       key={id}
       className={
         'bg-indigo-500 shadow-lg shadow-indigo-500/50 border-2 border-indigo-600 rounded-[1vw] mb-5 p-5 outline-black/5 dark:bg-gray-800 bg-opacity-10 overflow-hidden resize-none'
@@ -33,9 +34,12 @@ const PostItemPending = ({ fulfilledStatus, id, title, text, data, changeStatus,
         <MyButton className={'m-2 col-end-3 row'} onClick={changeStatus}>
           Изменить
         </MyButton>
-        <MyButton className={'m-2 col-end-4 row-end-1'} onClick={() => removePost(id)}>
+        <MyButton className={'m-2 col-end-4 row-end-1'} onClick={rejectedStatus}>
           Удалить
         </MyButton>
+        {/*<MyButton className={'m-2 col-end-4 row-end-1'} onClick={() => removePost(id)}>*/}
+        {/*  Удалить*/}
+        {/*</MyButton>*/}
         <p className={'mr-2 col-end-4 row-end-3'}>
           {data.toLocaleTimeString([], {
             hour: '2-digit',
@@ -45,7 +49,7 @@ const PostItemPending = ({ fulfilledStatus, id, title, text, data, changeStatus,
             data.toDateString()}
         </p>
       </div>
-    </form>
+    </div>
   );
 };
 
