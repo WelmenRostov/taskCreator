@@ -1,12 +1,11 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
+
 module.exports = {
-    darkMode: 'dark', // Для активации темы через класс 'dark'
-    content: [
-	"./index.html",
-	"./src/**/*.{js,jsx,ts,tsx}", // укажи путь к своим файлам
-    ],
-    theme: {
-	extend: {},
-    },
-    plugins: [],
-}
+  content: [
+    './src/**/*.{js,jsx,ts,tsx}', // Пути, где Tailwind будет искать классы для обработки
+  ],
+  theme: {
+    extend: {}, // Здесь можно расширить стандартную тему Tailwind
+  },
+  plugins: [], // Здесь можно добавлять дополнительные плагины, если нужно
+};
