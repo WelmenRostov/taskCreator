@@ -77,13 +77,11 @@ const TaskForm = () => {
           rows={1}
           onInput={adjustTextareaHeight} // Автоматическое изменение высоты
         ></MyTextarea>
-        <MyButton
-          type="submit"
-          color="blue"
-          additionalStyle="w-[160px] item-center justify-center top-1/2 left-1/2 transform translate-x-20 translate-y-1"
-        >
-          Отправить
-        </MyButton>
+        <div className="flex items-center justify-center">
+          <MyButton className={'btn btn-soft w-[160px] '} type="submit" color="blue">
+            Отправить
+          </MyButton>
+        </div>
       </div>
     </form>
   );

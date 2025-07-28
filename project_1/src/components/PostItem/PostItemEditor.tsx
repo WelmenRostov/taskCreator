@@ -30,7 +30,7 @@ const PostItemEditor = ({
           'bg-indigo-500 shadow-lg shadow-orange-400/50 border-2 border-orange-400 rounded-[1vw]  mb-5 p-5 outline-black/5 dark:bg-gray-800 bg-opacity-10 overflow-hidden resize-none'
         }
       >
-        <h1 className={'flex'}>
+        <h1 className={'flex text-[30px]'}>
           {index + 1}.
           <MyTextarea
             name="title"
@@ -49,11 +49,11 @@ const PostItemEditor = ({
           onChange={handleSetEditableText} // Обновляем локальное состояние
         />
         <div className={'grid grid-flow-row-dense grid-cols-1 grid-rows-1'}>
-          <MyButton className="m-2 col-end-3 row" onClick={handleSave}>
+          <MyButton className="btn btn-soft m-2 col-end-3 row" onClick={handleSave}>
             Сохранить
           </MyButton>
 
-          <MyButton className="m-2 col-end-4 row-end-1" onClick={handleNoSave}>
+          <MyButton className="btn btn-soft m-2 col-end-4 row-end-1" onClick={handleNoSave}>
             Отмена
           </MyButton>
 

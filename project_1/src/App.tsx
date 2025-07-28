@@ -7,7 +7,7 @@ import { PostProvider } from './context/PostContext';
 export const App: React.FC = () => {
   return (
     <PostProvider>
-      <div className={'max-w-[1074px] m-auto'}>
+      <div className={'max-w-[1074px] min-w-[675px] m-auto '}>
         <Navigation />
         <div
           className={

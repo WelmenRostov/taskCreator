@@ -15,12 +15,12 @@ const PostItemfulFilled = ({ id, title, text, data, index }: Props) => {
         'bg-green-400 shadow-lg shadow-green-500/50 border-2 border-green-600 rounded-[1vw]  mb-5 p-5 outline-black/5 dark:bg-green-950 bg-opacity-10 overflow-hidden resize-none'
       }
     >
-      <h1 className={'break-words'}>
+      <h1 className={'break-words text-[30px]'}>
         {index + 1}. {title}
       </h1>
       <p
         className={
-          'min-h-[50px] w-full pt-2 rounded-[1vw] focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-x-auto resize-none flex-grow break-words'
+          'min-h-[50px] w-full pt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-x-auto resize-none flex-grow break-words'
         }
       >
         {text}

@@ -27,8 +27,6 @@ export const PostItem = (props: Props) => {
     editableText,
   } = usePostItem(props);
 
-  console.log('!status', status, title);
-
   return (
     <>
       {editable && (

@@ -70,7 +70,6 @@ export const usePostItem = (props: Props) => {
       status: 'pending',
       editable: false,
     };
-    console.log('123');
     updatePost(id, updatedPost);
   };
 
@@ -87,7 +86,6 @@ export const usePostItem = (props: Props) => {
   };
 
   const handleSetEditableTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log('!title', e.target.value);
     setEditableTitle(e.target.value);
   };
   const handleSetEditableText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

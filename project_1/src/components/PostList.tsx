@@ -33,7 +33,7 @@ const PostList = () => {
   };
 
   return (
-    <div className="">
+    <div className="h-full">
       <div className="flex justify-between items-center">
         <MySelect
           value={selectedSort}
@@ -46,14 +46,14 @@ const PostList = () => {
             { value: 'text', name: 'По описанию' },
           ]}
         ></MySelect>
-        <div>
+        <div className={'flex justify-between items-center'}>
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск..."
-            className="min-w-[200] border-2 border-indigo-600 rounded-[1vw] p-2 -mt-[100px] bg-indigo-800"
+            className="min-w-[200] rounded-[1vw] p-2 bg-indigo-800"
           />
-          <MyButton additionalStyle="m-2">Поиск</MyButton>
+          <MyButton additionalStyle="m-2 btn btn-soft">Поиск</MyButton>
         </div>
       </div>
       {sortedAndSearchPosts.length !== 0 ? (
