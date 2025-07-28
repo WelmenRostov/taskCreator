@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-
+@custom-variant dark (&:where(.dark, .dark *));
 :root {
   min-width: 600px;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

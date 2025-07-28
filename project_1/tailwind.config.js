@@ -1,20 +1,11 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
+
 module.exports = {
   content: [
-    './src/**/*.{js,ts,jsx,tsx}', // путь к твоим файлам
+    './src/**/*.{js,jsx,ts,tsx}', // Пути, где Tailwind будет искать классы для обработки
   ],
   theme: {
-    extend: {
-      keyframes: {
-        spread: {
-          '0%': { transform: 'scale(0)', opacity: '0.5' },
-          '100%': { transform: 'scale(4)', opacity: '0' },
-        },
-      },
-      animation: {
-        spread: 'spread 0.8s ease-out forwards',
-      },
-    },
+    extend: {}, // Здесь можно расширить стандартную тему Tailwind
   },
-  plugins: [],
+  plugins: [], // Здесь можно добавлять дополнительные плагины, если нужно
 };
