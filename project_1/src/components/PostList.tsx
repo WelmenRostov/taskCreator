@@ -1,11 +1,11 @@
 import { useMemo, useState, type SetStateAction } from 'react';
-import MySelect from './UI/select/MySelect.tsx';
-import MyButton from './UI/button/MyButton.tsx';
+import MySelect from './UI/select/MySelect';
+import MyButton from './UI/button/MyButton';
 import { PostItem } from './PostItem/PostItem';
 import { usePostContext } from '../context/usePostContext';
 
 const PostList = () => {
-  const { posts, removePost, updatePost, updateStatus } = usePostContext();
+  const { posts, removePost, updatePost, updateStatus, setLimit, limit } = usePostContext();
   const [selectedSort, setSelectedSort] = useState('');
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -46,7 +46,27 @@ const PostList = () => {
             { value: 'text', name: 'По описанию' },
           ]}
         ></MySelect>
-        <div className={'flex justify-between items-center'}>
+        <div className="join mr-auto ml-[10px]">
+          <button
+            className={`join-item btn bg-indigo-800 ${limit === 5 ? 'bg-indigo-950' : ''} active:bg-indigo-900 `}
+            onClick={() => setLimit(5)}
+          >
+            5
+          </button>
+          <button
+            className={`join-item btn bg-indigo-800 ${limit === 10 ? 'bg-indigo-950' : ''} active:bg-indigo-900 `}
+            onClick={() => setLimit(10)}
+          >
+            10
+          </button>
+          <button
+            className={`join-item btn bg-indigo-800 ${limit === 20 ? 'bg-indigo-950' : ''} active:bg-indigo-900 `}
+            onClick={() => setLimit(20)}
+          >
+            20
+          </button>
+        </div>
+        <div className={'flex justify-between items-center ml-[10px]'}>
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

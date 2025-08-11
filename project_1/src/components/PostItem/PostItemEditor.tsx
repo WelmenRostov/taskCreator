@@ -49,14 +49,12 @@ const PostItemEditor = ({
           onChange={handleSetEditableText} // Обновляем локальное состояние
         />
         <div className={'grid grid-flow-row-dense grid-cols-1 grid-rows-1'}>
-          <MyButton className="btn btn-soft m-2 col-end-3 row" onClick={handleSave}>
+          <MyButton className={'btn btn-soft m-2 -mr-[40px] col-end-3'} onClick={handleSave}>
             Сохранить
           </MyButton>
-
-          <MyButton className="btn btn-soft m-2 col-end-4 row-end-1" onClick={handleNoSave}>
+          <MyButton className={'btn btn-soft w-[100px] ml-[50px] m-2 col-end-4 row-end-1 '} onClick={handleNoSave}>
             Отмена
           </MyButton>
-
           <p className={'mr-2 col-end-4 row-end-3'}>
             {data.toLocaleTimeString([], {
               hour: '2-digit',

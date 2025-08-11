@@ -1,4 +1,4 @@
-import MyButton from './UI/button/MyButton.tsx';
+import MyButton from './UI/button/MyButton';
 import { usePostContext } from '../context/usePostContext';
 import ToggleDarkMode from './darkMode/ToggleDarkMode';
 

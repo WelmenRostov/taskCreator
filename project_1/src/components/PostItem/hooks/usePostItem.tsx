@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Post } from '../../../types/types';
+import { patchTodos } from '../../../api/todos';
 
 interface Props extends Post {
   index: number;
@@ -25,7 +26,7 @@ export const usePostItem = (props: Props) => {
     updatePost(id, updatedPost);
   };
 
-  const fulfilledStatus = () => {
+  const fulfilledStatus = async () => {
     const updatedPost: Post = {
       id,
       title,
@@ -34,10 +35,11 @@ export const usePostItem = (props: Props) => {
       status: 'fulfilled',
       editable,
     };
+    await patchTodos(id, undefined, undefined, 'fulfilled');
     updateStatus(id, updatedPost);
   };
 
-  const rejectedStatus = () => {
+  const rejectedStatus = async () => {
     const updatedPost: Post = {
       id,
       title,
@@ -47,9 +49,10 @@ export const usePostItem = (props: Props) => {
       editable,
     };
     updateStatus(id, updatedPost);
+    await patchTodos(id, undefined, undefined, 'rejected');
   };
 
-  const recoverStatus = () => {
+  const recoverStatus = async () => {
     const updatedPost: Post = {
       id,
       title,
@@ -59,6 +62,7 @@ export const usePostItem = (props: Props) => {
       editable,
     };
     updateStatus(id, updatedPost);
+    await patchTodos(id, undefined, undefined, 'pending');
   };
 
   const handleSave = () => {
@@ -71,6 +75,7 @@ export const usePostItem = (props: Props) => {
       editable: false,
     };
     updatePost(id, updatedPost);
+    patchTodos(id, editableTitle, editableText);
   };
 
   const handleNoSave = () => {

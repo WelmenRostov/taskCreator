@@ -29,7 +29,7 @@ const MyTextarea = ({ name, placeholder, value, className, size, ...props }: MyT
 
   // Функция для корректной подгонки высоты
   const adjustTextareaHeight = () => {
-    if (textareaRef.current?.style) {
+    if (textareaRef.current) {
       if ('style' in textareaRef.current) {
         textareaRef.current.style.height = 'auto';
       }

@@ -31,10 +31,10 @@ const PostItemPending = ({ fulfilledStatus, id, title, text, data, changeStatus,
         <MyButton className={'btn btn-soft m-2 col-end-1 row'} onClick={fulfilledStatus}>
           Выполнена
         </MyButton>
-        <MyButton className={'btn btn-soft m-2 col-end-3 row'} onClick={changeStatus}>
+        <MyButton className={'btn btn-soft m-2 -mr-[40px] col-end-3'} onClick={changeStatus}>
           Изменить
         </MyButton>
-        <MyButton className={'btn btn-soft w-[100px] m-2 col-end-4 row-end-1'} onClick={rejectedStatus}>
+        <MyButton className={'btn btn-soft w-[100px] m-2 col-end-4 row-end-1 '} onClick={rejectedStatus}>
           Удалить
         </MyButton>
         {/*<MyButton className={'m-2 col-end-4 row-end-1'} onClick={() => removePost(id)}>*/}
