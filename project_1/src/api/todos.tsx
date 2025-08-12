@@ -7,11 +7,15 @@ export const fetchTodos = async (
   page: number,
   limit: number,
   filter: 'pending' | 'fulfilled' | 'rejected'
-): Promise<{ data: Post[] }> => {
+): Promise<{ data: Post[]; totalPages: number; page: number }> => {
   const response = await axios.get(`${API_URL}/todos`, {
     params: { page, limit, filter },
   });
-  return response.data;
+  return {
+    data: response.data.data,
+    totalPages: response.data.totalPages,
+    page: response.data.page,
+  };
 };
 
 export const createTodos = async (title: string, text: string) => {

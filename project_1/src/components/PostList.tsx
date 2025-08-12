@@ -10,16 +10,21 @@ const PostList = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
 
+  const postsWithDates = posts.map((post) => ({
+    ...post,
+    data: new Date(post.data), // Преобразуем строку в Date
+  }));
+
   const sortedPosts = useMemo(() => {
     const data = {
-      ['text']: [...posts].sort((a, b) => a.text.localeCompare(b.text)),
-      ['title']: [...posts].sort((a, b) => a.title.localeCompare(b.title)),
-      ['data']: [...posts].sort((a, b) => +b.data - +a.data),
-      ['old']: [...posts].sort((a, b) => +a.data - +b.data),
-      ['']: posts,
+      ['text']: [...postsWithDates].sort((a, b) => a.text.localeCompare(b.text)),
+      ['title']: [...postsWithDates].sort((a, b) => a.title.localeCompare(b.title)),
+      ['data']: [...postsWithDates].sort((a, b) => +b.data - +a.data), // Сортировка по дате
+      ['old']: [...postsWithDates].sort((a, b) => +a.data - +b.data), // Сортировка по старым постам
+      ['']: postsWithDates, // Без сортировки
     };
     return data[selectedSort as keyof typeof data];
-  }, [selectedSort, posts, searchQuery]);
+  }, [selectedSort, postsWithDates, searchQuery]);
 
   const sortedAndSearchPosts = useMemo(() => {
     return sortedPosts.filter(

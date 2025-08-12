@@ -1,61 +1,15 @@
-import { type FC, type ReactNode, useEffect, useReducer, useState } from 'react';
+import { type FC, type ReactNode, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PostContext } from './usePostContext';
-import { postReducer } from '../features/postReducer/postReducer';
+import { setPosts, addPost, updatePost, removePost, setStatus, setLimit } from '../features/postReducer/postReducer';
 import type { Post, TStatus } from '../types/types';
 import { fetchTodos } from '../api/todos';
-import { PostActionType } from '../features/postReducer/postReducerTypes';
-
-const defaultPosts: Post[] = [
-  {
-    id: 1,
-    count: 1,
-    title: 'Добавление задачи',
-    text: 'Поле ввода для текста задачи.\nКнопка "Добавить", которая добавляет задачу в список.',
-    data: new Date(10000),
-    status: 'pending',
-    editable: false,
-  },
-  {
-    id: 2,
-    count: 2,
-    title: 'Отображение задач',
-    text: 'Список задач с возможностью отметить задачу как выполненную.\nВозможность удалить задачу из списка.',
-    data: new Date(300000),
-    status: 'pending',
-    editable: false,
-  },
-];
-
-const getStoredPosts = (): Post[] | null => {
-  try {
-    const raw = localStorage.getItem('posts');
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return null;
-
-    return parsed.map((post: Post) => ({
-      ...post,
-      data: new Date(post.data),
-    }));
-  } catch (error) {
-    console.error('Ошибка чтения localStorage:', error);
-    return null;
-  }
-};
-
-const initialPosts = getStoredPosts() || defaultPosts;
-
-const initialState = {
-  posts: initialPosts,
-  status: 'pending' as TStatus,
-  limit: 5,
-};
+import type { RootState } from '../app/store';
 
 export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [modal, setModal] = useState(false);
-  const [state, dispatch] = useReducer(postReducer, initialState);
-
-  const { status, limit } = state;
+  const dispatch = useDispatch();
+  const { posts, status, limit, loading } = useSelector((state: RootState) => state.post);
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -72,71 +26,64 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
           editable: item.editable ?? false,
         }));
 
-        dispatch({ type: PostActionType.SET_POSTS, payload: preparedPosts });
+        dispatch(setPosts(preparedPosts));
       } catch (error) {
         console.error('Ошибка при загрузке с сервера. Используем localStorage');
-        const fallbackPosts = getStoredPosts();
-        if (fallbackPosts) {
-          dispatch({ type: PostActionType.SET_POSTS, payload: fallbackPosts });
-        }
         return error;
       }
     };
 
     loadPosts();
-  }, [status, limit]);
+  }, [dispatch, status, limit]);
 
   useEffect(() => {
-    localStorage.setItem('posts', JSON.stringify(state.posts));
-  }, [state.posts]);
+    localStorage.setItem('posts', JSON.stringify(posts));
+  }, [posts]);
 
   const handleAddPost = (post: Post) => {
-    dispatch({ type: PostActionType.ADD_POST, payload: post });
+    dispatch(addPost(post));
     setModal(false);
   };
 
   const handleSave = (post: Post) => {
-    dispatch({ type: PostActionType.UPDATE_POST, payload: post });
+    dispatch(updatePost(post));
   };
 
-  const removePost = (id: number) => {
-    dispatch({ type: PostActionType.REMOVE_POST, payload: id });
+  const removePostHandler = (id: number) => {
+    dispatch(removePost(id));
   };
 
-  const updatePost = (_id: number, post: Post) => {
-    dispatch({ type: PostActionType.UPDATE_POST, payload: post });
-  };
-
-  const updateStatus = (_id: number, updatedPost: Post) => {
-    dispatch({
-      type: PostActionType.UPDATE_POST,
-      payload: { ...updatedPost },
-    });
+  const updatePostHandler = (_id: number, post: Post) => {
+    dispatch(updatePost(post));
   };
 
   const handleStatus = (status: TStatus) => {
-    dispatch({ type: PostActionType.SET_STATUS, payload: status });
+    dispatch(setStatus(status));
   };
 
-  const setLimit = (val: number) => {
-    dispatch({ type: PostActionType.SET_LIMIT, payload: val });
+  const setLimitHandler = (val: number) => {
+    dispatch(setLimit(val));
   };
 
+  const updateStatus = (_id: number, updatedPost: Post) => {
+    dispatch(updatePost(updatedPost));
+  };
   return (
     <PostContext.Provider
       value={{
-        posts: state.posts,
+        posts,
         modal,
         setModal,
         handleSave,
         handleAddPost,
-        removePost,
-        updatePost,
-        updateStatus,
+        removePost: removePostHandler,
+        updatePost: updatePostHandler,
+        updateStatus, // Передаем updateStatus
         handleStatus,
-        setLimit,
-        limit: state.limit,
-        status: state.status,
+        setLimit: setLimitHandler,
+        limit,
+        status,
+        loading, // Передаем loading
       }}
     >
       {children}

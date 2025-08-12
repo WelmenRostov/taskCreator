@@ -5,7 +5,7 @@ import PostList from './components/PostList';
 import { PostProvider } from './context/PostProvider';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
-import { Counter } from './features/counter/Counter';
+import { Pagination } from './features/counter/Pagination';
 
 export const App: React.FC = () => {
   return (
@@ -17,7 +17,7 @@ export const App: React.FC = () => {
             <PostList />
           </div>
           <TaskForm />
-          <Counter />
+          <Pagination />
         </div>
       </PostProvider>
     </Provider>

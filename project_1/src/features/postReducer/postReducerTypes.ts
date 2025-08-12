@@ -4,6 +4,9 @@ export interface PostState {
   posts: Post[];
   status: TStatus;
   limit: number;
+  loading?: 'process' | 'uploaded' | 'error';
+  page: number;
+  totalPage: number;
 }
 
 export const PostActionType = {
