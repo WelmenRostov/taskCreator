@@ -31,12 +31,12 @@ const PostItemPending = ({ id, title, text, data, index, recoverStatus }: Props)
           Восстановить
         </MyButton>
         <p className={'mr-2 col-end-4 row-end-3'}>
-          {data.toLocaleTimeString([], {
+          {new Date(data).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
           }) +
             ' ' +
-            data.toDateString()}
+            new Date(data).toDateString()}
         </p>
       </div>
     </div>

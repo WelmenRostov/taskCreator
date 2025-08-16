@@ -1,27 +1,27 @@
 import { type FC, type ReactNode, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { PostContext } from './usePostContext';
+import { useSelector } from 'react-redux';
+import { PostContext, useAppDispatch } from './usePostContext';
 import { setPosts, addPost, updatePost, removePost, setStatus, setLimit } from '../features/postReducer/postReducer';
 import type { Post, TStatus } from '../types/types';
-import { fetchTodos } from '../api/todos';
 import type { RootState } from '../app/store';
+import { fetchPostsThunk } from '../features/postReducer/postThunks';
 
 export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [modal, setModal] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { posts, status, limit, loading } = useSelector((state: RootState) => state.post);
 
   useEffect(() => {
     const loadPosts = async () => {
       try {
-        const response = await fetchTodos(1, limit, status);
+        const response = await dispatch(fetchPostsThunk({ page: 1, limit, filter: status })).unwrap();
 
         const preparedPosts: Post[] = response.data.map((item: Post) => ({
           id: item.id,
           count: item.count,
           title: item.title,
           text: item.text,
-          data: new Date(item.data),
+          data: new Date(item.data).toISOString(),
           status: item.status,
           editable: item.editable ?? false,
         }));

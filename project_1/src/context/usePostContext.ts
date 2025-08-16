@@ -1,5 +1,10 @@
 import { useContext, createContext } from 'react';
 import type { Post, TStatus } from '../types/types';
+import type { AppDispatch, RootState } from '../app/store';
+import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 interface PostContextType {
   posts: Post[];
@@ -12,7 +17,7 @@ interface PostContextType {
   handleSave: (post: Post) => void;
   removePost: (id: number) => void;
   updatePost: (id: number, post: Post) => void;
-  updateStatus: (id: number, post: Post) => void; // Добавляем updateStatus
+  updateStatus: (id: number, post: Post) => void;
   handleStatus: (status: TStatus) => void;
   setLimit: (val: number) => void;
 }

@@ -1,6 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Post, TStatus } from '../../types/types';
 import type { PostState } from './postReducerTypes';
+import { createPostThunk, fetchPostsThunk, updatePostThunk } from './postThunks';
 
 const initialState: PostState = {
   posts: [],
@@ -44,6 +45,35 @@ const postSlice = createSlice({
     setLimit(state, action: PayloadAction<number>) {
       state.limit = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchPostsThunk.pending, (state) => {
+      state.loading = 'process';
+    });
+    builder.addCase(fetchPostsThunk.fulfilled, (state, action) => {
+      state.loading = 'uploaded';
+      state.posts = action.payload.data;
+      state.page = action.payload.page;
+      state.totalPage = action.payload.totalPages;
+    });
+
+    builder.addCase(fetchPostsThunk.rejected, (state) => {
+      state.loading = 'error';
+    });
+
+    builder.addCase(createPostThunk.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.posts.push(action.payload);
+      }
+    });
+
+    builder.addCase(updatePostThunk.fulfilled, (state, action) => {
+      if (!action.payload) return;
+      const index = state.posts.findIndex((post) => post.id === action.payload.id);
+      if (index !== -1) {
+        state.posts[index] = action.payload;
+      }
+    });
   },
 });
 

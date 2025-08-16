@@ -3,7 +3,7 @@ export interface Post {
   count?: number;
   title: string;
   text: string;
-  data: Date;
+  data: string;
   status: 'pending' | 'fulfilled' | 'rejected';
   editable?: boolean;
 }

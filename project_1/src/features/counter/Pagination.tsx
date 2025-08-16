@@ -1,26 +1,15 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../../app/store';
-import { fetchTodos } from '../../api/todos';
-import { setPagination, setPosts } from '../postReducer/postReducer';
+import type { RootState, AppDispatch } from '../../app/store';
+import { setPagination } from '../postReducer/postReducer';
+import { fetchPostsThunk } from '../postReducer/postThunks';
 
 export function Pagination() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { status, limit, page, totalPage } = useSelector((state: RootState) => state.post);
 
   useEffect(() => {
-    const loadPosts = async () => {
-      try {
-        const response = await fetchTodos(page, limit, status);
-        dispatch(setPosts(response.data));
-        dispatch(setPagination({ page: response.page, totalPage: response.totalPages }));
-      } catch (error) {
-        console.error('Ошибка при загрузке с сервера.');
-        return error;
-      }
-    };
-
-    loadPosts();
+    dispatch(fetchPostsThunk({ page, limit, filter: status }));
   }, [dispatch, page, limit, status]);
 
   const handlePreviousPage = () => {

@@ -2,13 +2,14 @@ import { type FormEvent, useRef } from 'react';
 import MyButton from './UI/button/MyButton.tsx';
 import clsx from 'clsx';
 import MyTextarea from './UI/textarear/MyTextarea';
-import { usePostContext } from '../context/usePostContext';
-import { createTodos } from '../api/todos';
+import { useAppDispatch, usePostContext } from '../context/usePostContext';
+import { createPostThunk } from '../features/postReducer/postThunks';
 
 const TaskForm = () => {
   const { modal, setModal, handleAddPost } = usePostContext();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const dispatch = useAppDispatch(); // <- типизированный dispatch
   // Функция для изменения высоты textarea по мере ввода
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
@@ -38,7 +39,7 @@ const TaskForm = () => {
       e.preventDefault();
       return;
     }
-    const result = await createTodos(title.value, text.value);
+    const result = await dispatch(createPostThunk({ title: title.value, text: text.value })).unwrap();
     if (result) {
       title.value = '';
       text.value = '';
@@ -49,7 +50,7 @@ const TaskForm = () => {
       title: title.value,
       text: text.value,
       count: 1,
-      data: new Date(),
+      data: new Date().toISOString(),
       status: 'pending',
       id: +new Date(),
       editable: false,

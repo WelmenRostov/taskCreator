@@ -1,101 +1,93 @@
 import React, { useState } from 'react';
 import type { Post } from '../../../types/types';
-import { patchTodos } from '../../../api/todos';
+import { useAppDispatch } from '../../../context/usePostContext';
+import { updatePostThunk } from '../../../features/postReducer/postThunks';
 
 interface Props extends Post {
   index: number;
   removePost: (id: number) => void;
-  updatePost: (id: number, updatedPost: Post) => void;
-  updateStatus: (id: number, updatedPost: Post) => void;
 }
 
 export const usePostItem = (props: Props) => {
-  const { id, data, text, title, editable, status, updatePost, updateStatus } = props;
+  const { id, text, title, status } = props;
+  const dispatch = useAppDispatch();
+
   const [editableTitle, setEditableTitle] = useState(title);
   const [editableText, setEditableText] = useState(text);
 
+  // Изменить статус на "pending" (редактируемый)
   const changeStatus = () => {
-    const updatedPost: Post = {
-      id,
-      title,
-      text,
-      data,
-      editable: true,
-      status: 'pending',
-    };
-    updatePost(id, updatedPost);
+    dispatch(
+      updatePostThunk({
+        id,
+        status: 'pending',
+      })
+    );
   };
 
+  // Завершить задачу
   const fulfilledStatus = async () => {
-    const updatedPost: Post = {
-      id,
-      title,
-      text,
-      data,
-      status: 'fulfilled',
-      editable,
-    };
-    await patchTodos(id, undefined, undefined, 'fulfilled');
-    updateStatus(id, updatedPost);
+    await dispatch(
+      updatePostThunk({
+        id,
+        status: 'fulfilled',
+      })
+    );
   };
 
+  // Отклонить задачу
   const rejectedStatus = async () => {
-    const updatedPost: Post = {
-      id,
-      title,
-      text,
-      data,
-      status: 'rejected',
-      editable,
-    };
-    updateStatus(id, updatedPost);
-    await patchTodos(id, undefined, undefined, 'rejected');
+    await dispatch(
+      updatePostThunk({
+        id,
+        status: 'rejected',
+      })
+    );
   };
 
+  // Восстановить задачу в статус "pending"
   const recoverStatus = async () => {
-    const updatedPost: Post = {
-      id,
-      title,
-      text,
-      data,
-      status: 'pending',
-      editable,
-    };
-    updateStatus(id, updatedPost);
-    await patchTodos(id, undefined, undefined, 'pending');
+    await dispatch(
+      updatePostThunk({
+        id,
+        status: 'pending',
+      })
+    );
   };
 
-  const handleSave = () => {
-    const updatedPost: Post = {
-      id,
-      title: editableTitle,
-      text: editableText,
-      data,
-      status: 'pending',
-      editable: false,
-    };
-    updatePost(id, updatedPost);
-    patchTodos(id, editableTitle, editableText);
+  // Сохранить изменения (заголовок и текст)
+  const handleSave = async () => {
+    await dispatch(
+      updatePostThunk({
+        id,
+        title: editableTitle,
+        text: editableText,
+        status: 'pending',
+      })
+    );
   };
 
+  // Отменить редактирование (оставить как было)
   const handleNoSave = () => {
-    const updatedPost: Post = {
-      id,
-      title,
-      text,
-      data,
-      status,
-      editable: false,
-    };
-    updatePost(id, updatedPost);
+    dispatch(
+      updatePostThunk({
+        id,
+        title,
+        text,
+        status,
+      })
+    );
   };
 
+  // Обновление локального состояния при вводе текста
   const handleSetEditableTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditableTitle(e.target.value);
   };
+
   const handleSetEditableText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditableText(e.target.value);
   };
+
   return {
     handleSetEditableText,
     handleSetEditableTitle,

@@ -9,6 +9,7 @@ export const fetchTodos = async (
   filter: 'pending' | 'fulfilled' | 'rejected'
 ): Promise<{ data: Post[]; totalPages: number; page: number }> => {
   const response = await axios.get(`${API_URL}/todos`, {
+    timeout: 15000000,
     params: { page, limit, filter },
   });
   return {
