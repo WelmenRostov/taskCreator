@@ -3,6 +3,7 @@ import MySelect from './UI/select/MySelect';
 import MyButton from './UI/button/MyButton';
 import { PostItem } from './PostItem/PostItem';
 import { usePostContext } from '../context/usePostContext';
+import ViewTasks from './ViewTasks';
 
 const PostList = () => {
   const { posts, removePost, updatePost, updateStatus, setLimit, limit } = usePostContext();
@@ -39,6 +40,7 @@ const PostList = () => {
 
   return (
     <div className="h-full">
+      <ViewTasks />
       <div className="flex justify-between items-center">
         <MySelect
           value={selectedSort}

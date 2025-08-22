@@ -14,15 +14,15 @@ interface EditorProps extends Post {
 }
 
 const PostItemEditor = ({
-  index,
-  handleSave,
-  handleSetEditableTitle,
-  handleSetEditableText,
-  editableTitle,
-  editableText,
-  handleNoSave,
-  data,
-}: EditorProps) => {
+                          index,
+                          handleSave,
+                          handleSetEditableTitle,
+                          handleSetEditableText,
+                          editableTitle,
+                          editableText,
+                          handleNoSave,
+                          data,
+                        }: EditorProps) => {
   return (
     <div>
       <div
@@ -57,9 +57,9 @@ const PostItemEditor = ({
           </MyButton>
           <p className={'mr-2 col-end-4 row-end-3'}>
             {new Date(data).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            }) +
+                hour: '2-digit',
+                minute: '2-digit',
+              }) +
               ' ' +
               new Date(data).toDateString()}
           </p>

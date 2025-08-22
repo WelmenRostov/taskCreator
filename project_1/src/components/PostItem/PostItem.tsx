@@ -22,7 +22,6 @@ export const PostItem = (props: Props) => {
     fulfilledStatus,
     rejectedStatus,
     recoverStatus,
-    changeStatus,
     editableTitle,
     editableText,
   } = usePostItem(props);
@@ -43,7 +42,6 @@ export const PostItem = (props: Props) => {
       {status == 'pending' && !editable && (
         <PostItemPending
           fulfilledStatus={fulfilledStatus}
-          changeStatus={changeStatus}
           index={index}
           rejectedStatus={rejectedStatus}
           text={text}
@@ -55,7 +53,6 @@ export const PostItem = (props: Props) => {
       {status == 'fulfilled' && (
         <PostItemfulFilled
           fulfilledStatus={fulfilledStatus}
-          changeStatus={changeStatus}
           index={index}
           removePost={removePost}
           text={text}
@@ -67,7 +64,6 @@ export const PostItem = (props: Props) => {
       {status == 'rejected' && (
         <PostItemRejected
           fulfilledStatus={fulfilledStatus}
-          changeStatus={changeStatus}
           index={index}
           recoverStatus={recoverStatus}
           text={text}

@@ -2,7 +2,6 @@ import type { Post } from '../../types/types';
 
 interface Props extends Omit<Post, 'status'> {
   removePost: (index: number) => void;
-  changeStatus: () => void;
   fulfilledStatus: () => void;
   index: number;
 }

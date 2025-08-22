@@ -15,16 +15,6 @@ export const usePostItem = (props: Props) => {
   const [editableTitle, setEditableTitle] = useState(title);
   const [editableText, setEditableText] = useState(text);
 
-  // Изменить статус на "pending" (редактируемый)
-  const changeStatus = () => {
-    dispatch(
-      updatePostThunk({
-        id,
-        status: 'pending',
-      })
-    );
-  };
-
   // Завершить задачу
   const fulfilledStatus = async () => {
     await dispatch(
@@ -55,7 +45,6 @@ export const usePostItem = (props: Props) => {
     );
   };
 
-  // Сохранить изменения (заголовок и текст)
   const handleSave = async () => {
     await dispatch(
       updatePostThunk({
@@ -96,7 +85,6 @@ export const usePostItem = (props: Props) => {
     recoverStatus,
     fulfilledStatus,
     rejectedStatus,
-    changeStatus,
     editableTitle,
     editableText,
   };

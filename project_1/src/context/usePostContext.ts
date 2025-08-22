@@ -26,6 +26,7 @@ export const PostContext = createContext<PostContextType | null>(null);
 
 export const usePostContext = () => {
   const context = useContext(PostContext);
+  console.log('Юзается контекст');
   if (!context) {
     throw new Error('usePostContext must be used within a PostProvider');
   }

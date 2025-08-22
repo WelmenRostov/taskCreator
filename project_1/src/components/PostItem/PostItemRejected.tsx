@@ -3,7 +3,6 @@ import type { Post } from '../../types/types';
 
 interface Props extends Omit<Post, 'status'> {
   recoverStatus: () => void;
-  changeStatus: () => void;
   fulfilledStatus: () => void;
   index: number;
 }

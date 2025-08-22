@@ -1,15 +1,22 @@
 import MyButton from '../UI/button/MyButton';
 import type { Post } from '../../types/types';
+import { useDispatch } from 'react-redux';
+import { setEditable } from '../../features/postReducer/postReducer';
 
 interface Props extends Omit<Post, 'status'> {
   // removePost: (index: number) => void;
-  changeStatus: () => void;
   fulfilledStatus: () => void;
   rejectedStatus: () => void;
   index: number;
 }
 
-const PostItemPending = ({ fulfilledStatus, id, title, text, data, changeStatus, index, rejectedStatus }: Props) => {
+const PostItemPending = ({ fulfilledStatus, id, title, text, data, index, rejectedStatus }: Props) => {
+  const dispatch = useDispatch();
+
+  const handleEdit = (postId: number) => {
+    dispatch(setEditable(postId));
+  };
+
   return (
     <div
       key={id}
@@ -31,7 +38,7 @@ const PostItemPending = ({ fulfilledStatus, id, title, text, data, changeStatus,
         <MyButton className={'btn btn-soft m-2 col-end-1 row'} onClick={fulfilledStatus}>
           Выполнена
         </MyButton>
-        <MyButton className={'btn btn-soft m-2 -mr-[40px] col-end-3'} onClick={changeStatus}>
+        <MyButton className={'btn btn-soft m-2 -mr-[40px] col-end-3'} onClick={() => handleEdit(id)}>
           Изменить
         </MyButton>
         <MyButton className={'btn btn-soft w-[100px] m-2 col-end-4 row-end-1 '} onClick={rejectedStatus}>

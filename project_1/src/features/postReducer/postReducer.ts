@@ -16,6 +16,12 @@ const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
+    setEditable(state, action: PayloadAction<number>) {
+      const index = state.posts.findIndex((post) => post.id === action.payload);
+      if (index !== -1) {
+        state.posts[index].editable = true;
+      }
+    },
     setPosts(state, action: PayloadAction<Post[]>) {
       state.posts = action.payload.map((post) => ({
         ...post,
@@ -77,6 +83,7 @@ const postSlice = createSlice({
   },
 });
 
-export const { setPosts, addPost, setPagination, updatePost, removePost, setStatus, setLimit } = postSlice.actions;
+export const { setPosts, addPost, setPagination, updatePost, removePost, setStatus, setLimit, setEditable } =
+  postSlice.actions;
 
 export default postSlice.reducer;
