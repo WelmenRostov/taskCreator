@@ -20,7 +20,7 @@ const MyButton: React.FC<MyButtonProps> = ({
   ...props
 }) => {
   const buttonClasses = clsx(
-    'rounded-lg p-3 focus:outline-none focus:ring-2 transition-all dark:!bg-grey-950 border-2 border-gray-700',
+    'rounded-lg p-3 focus:outline-none dark:focus:ring-2 transition-all border-2 dark:border-gray-700 dark:bg-gray-850 border-yellow-700 dark:hover:border-indigo-500 hover:border-yellow-500 bg-gray-900/50 text-gray-800 dark:bg-gray-950/20 dark:text-zinc-200',
     {
       '!bg-indigo-700': isActive,
     },

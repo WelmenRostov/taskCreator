@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Post } from '../types/types';
 
-const API_URL = 'http://localhost:3001'; // замени на своё
+const API_URL = 'http://localhost:3001';
 
 export const fetchTodos = async (
   page: number,

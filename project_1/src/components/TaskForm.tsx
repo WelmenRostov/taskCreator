@@ -61,8 +61,8 @@ const TaskForm = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmit} className={visibleStatus}>
+    <div className="">
+      <form onSubmit={onSubmit} className={`${visibleStatus} z-10`}>
         <div
           onClick={setModalFunctyon}
           className="overflow-hidden resize-none absolute top-0 left-0 w-full h-full bg-indigo-950 opacity-55 backdrop-blur-sm"

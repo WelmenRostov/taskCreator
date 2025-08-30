@@ -25,7 +25,7 @@ export function Pagination() {
   };
 
   return (
-    <div className={'absolute pagination left-1/2 -translate-x-1/2'}>
+    <div className={'absolute pagination left-1/2 -translate-x-1/2 mt-2'}>
       <div className="">
         <button className={'btn bg-indigo-800'} onClick={handlePreviousPage} disabled={page === 1}>
           «
