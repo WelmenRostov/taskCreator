@@ -1,30 +1,33 @@
 import MyButton from './UI/button/MyButton';
 import ToggleDarkMode from './darkMode/ToggleDarkMode';
 import { NavLink, Outlet } from 'react-router-dom';
+import { colorBase, colorShadow } from '../ReduxComponents/type/type';
 
 const Navigation = () => {
   return (
     <>
-      <div className="relative bg-gray-200 shadow-lg shadow-indigo-500/50 border-2 border-indigo-600 rounded-t-[1vw]  p-2 outline-black/5 dark:bg-gray-800 bg-opacity-10 h-auto w-auto flex gap-x-2 justify-between">
+      <div
+        className={`relative shadow-lg  border-2  rounded-t-[1vw]  p-2 outline-black/5  bg-opacity-10 h-auto w-auto flex gap-x-2 justify-between ${colorBase} ${colorShadow}`}
+      >
         <div className="flex gap-x-2">
           <NavLink to="userprofile">
             {({ isActive }) => (
-              <MyButton className={`btn btn-soft ${isActive ? '!bg-indigo-700' : ''}`}>Профиль</MyButton>
+              <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Профиль</MyButton>
             )}
           </NavLink>
           <NavLink to="tasks">
             {({ isActive }) => (
-              <MyButton className={`btn btn-soft ${isActive ? '!bg-indigo-700' : ''}`}>Задачи</MyButton>
+              <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Задачи</MyButton>
             )}
           </NavLink>
           <NavLink to="redux">
             {({ isActive }) => (
-              <MyButton className={`btn btn-soft ${isActive ? '!bg-indigo-700' : ''}`}>Настройки</MyButton>
+              <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Настройки</MyButton>
             )}
           </NavLink>
           <NavLink to="/">
             {({ isActive }) => (
-              <MyButton className={`btn btn-soft ${isActive ? '!bg-indigo-700' : ''}`}>Информация</MyButton>
+              <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Информация</MyButton>
             )}
           </NavLink>
         </div>

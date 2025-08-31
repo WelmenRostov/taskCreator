@@ -1,24 +1,18 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const API_URL = 'http://localhost:3002';
 
-interface RegistrationResponse {
-  success: boolean;
-  message: string;
-  token?: string;
-  user?: {
-    id: string;
-    email: string;
-    login: string;
-  };
-}
-
-export const fetchAuth = async (email: string, login: string, pass: string): Promise<RegistrationResponse> => {
-  const response = await axios.post(`${API_URL}/auth/register`, {
-    email,
-    login,
-    password: pass,
-  });
-
-  return response.data;
+export const registeringNewUser = async (userData: FormData) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/register`, userData);
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data?.message || 'Error updating user data');
+    } else if (error instanceof Error) {
+      throw new Error(error.message || 'Unknown error occurred');
+    } else {
+      throw new Error('An unexpected error occurred');
+    }
+  }
 };

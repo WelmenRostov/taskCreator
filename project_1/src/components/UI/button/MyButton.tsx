@@ -20,9 +20,9 @@ const MyButton: React.FC<MyButtonProps> = ({
   ...props
 }) => {
   const buttonClasses = clsx(
-    'rounded-lg p-3 focus:outline-none dark:focus:ring-2 transition-all border-2 dark:border-gray-700 dark:bg-gray-850 border-yellow-700 dark:hover:border-indigo-500 hover:border-yellow-500 bg-gray-900/50 text-gray-800 dark:bg-gray-950/20 dark:text-zinc-200',
+    'rounded-lg p-3 focus:outline-none transition-all border-2 border-yellow-600 bg-yellow-600/90 text-gray-800 hover:bg-yellow-700 dark:bg-gray-950/20 dark:text-zinc-200 dark:focus:ring-2 dark:border-2 dark:border-gray-700 dark:bg-gray-850 dark:hover:border-indigo-500 dark:hover:dark:bg-indigo-700',
     {
-      '!bg-indigo-700': isActive,
+      'dark:bg-indigo-700 bg-yellow-700': isActive,
     },
     additionalStyle,
     className

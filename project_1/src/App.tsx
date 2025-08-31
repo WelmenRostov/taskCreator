@@ -25,7 +25,6 @@ export const App: React.FC = () => {
               <Route path="signin" element={<SignIn />} />
               <Route path="registration" element={<Registration />} />
               <Route path="/base" element={<Navigation />}>
-                {/* Вложенные маршруты */}
                 <Route
                   path="redux"
                   element={
