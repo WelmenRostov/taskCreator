@@ -10,22 +10,22 @@ const Navigation = () => {
         className={`relative shadow-lg  border-2  rounded-t-[1vw]  p-2 outline-black/5  bg-opacity-10 h-auto w-auto flex gap-x-2 justify-between ${colorBase} ${colorShadow}`}
       >
         <div className="flex gap-x-2">
-          <NavLink to="userprofile">
+          <NavLink to="/user/profile">
             {({ isActive }) => (
               <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Профиль</MyButton>
             )}
           </NavLink>
-          <NavLink to="tasks">
+          <NavLink to="/user/tasks">
             {({ isActive }) => (
               <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Задачи</MyButton>
             )}
           </NavLink>
-          <NavLink to="redux">
+          <NavLink to="/user/redux">
             {({ isActive }) => (
               <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Настройки</MyButton>
             )}
           </NavLink>
-          <NavLink to="/">
+          <NavLink to="/registration">
             {({ isActive }) => (
               <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Информация</MyButton>
             )}

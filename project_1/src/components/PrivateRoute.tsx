@@ -1,0 +1,61 @@
+import { type JSX, useEffect, useState } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { accessTokenLifeAPI, refreshAccessTokenAPI } from '../ReduxComponents/API/authAPI';
+import LoadSpinner from './LoadSpinner';
+
+const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+  const [isValid, setIsValid] = useState<null | boolean>(null);
+  const location = useLocation();
+
+  const PublicPaths = ['/signin', '/registration'];
+
+  useEffect(() => {
+    console.log('рендер PrivateRoute');
+    const checkToken = async () => {
+      try {
+        const token = localStorage.getItem('accessToken') || 'undefined';
+        if (!token) return setIsValid(false);
+
+        await accessTokenLifeAPI(token);
+
+        console.log('Все заебумба, работаем', token);
+        localStorage.setItem('accessToken', token);
+        setIsValid(true);
+      } catch (error) {
+        console.log('Access token недействителен. Пробуем обновить...', error);
+        try {
+          const res = await refreshAccessTokenAPI();
+
+          // Сохраняем новый токен
+          const newAccessToken = res.data.accessToken;
+          localStorage.setItem('accessToken', newAccessToken);
+
+          // Повторная проверка с новым токеном
+          await accessTokenLifeAPI(newAccessToken);
+          setIsValid(true);
+        } catch (refreshError) {
+          console.log('Refresh token не сработал, отправляем на логин', refreshError);
+          setIsValid(false);
+        }
+      }
+    };
+
+    checkToken();
+  }, []);
+
+  if (isValid === null)
+    return (
+      <>
+        <LoadSpinner />
+      </>
+    );
+
+  // Если не авторизован и не на публичном пути - редирект на signin
+  if (isValid === false && !PublicPaths.includes(location.pathname)) {
+    return <Navigate to="/signin" state={{ from: location }} replace />;
+  }
+
+  return children;
+};
+
+export default PrivateRoute;

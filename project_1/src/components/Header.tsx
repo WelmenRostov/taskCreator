@@ -1,15 +1,17 @@
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../app/store';
 
 const Header = () => {
-  // Пример состояния (в реальном случае данные приходят из контекста или стора)
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [user, setUser] = useState({ name: 'Буревестник', email: 'WelmenRosto@gmail.com' });
+  const userInfo = useSelector((state: RootState) => state.user.user);
+  const [user, setUser] = useState({ name: userInfo.login, email: userInfo.email });
 
   // Функция выхода
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setUser({ name: 'Буревестник', email: 'WelmenRosto@gmail.com' });
+    setUser({ name: userInfo.login, email: userInfo.email });
   };
 
   return (

@@ -7,7 +7,7 @@ interface PostItemProps extends Post {
 }
 
 const PostItem = (props: PostItemProps) => {
-  const { id, data, text, title, index, status } = props;
+  const { id, data, text, title, index } = props;
 
   return (
     <>

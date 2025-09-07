@@ -28,8 +28,6 @@ const TaskList = () => {
     </div>
   );
 
-  const ErrorComponent = (error: string | null) => <p>Ошибка: {error}</p>;
-
   return (
     <>
       <div className="h-full">
@@ -52,7 +50,7 @@ const TaskList = () => {
       ) : status === 'failed' ? (
         <p>Ошибка: {error}</p>
       ) : (
-        ErrorComponent
+        <p>Ошибка: {error}</p>
       )}
     </>
   );

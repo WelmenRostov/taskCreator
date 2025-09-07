@@ -1,18 +1,16 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { userNewRegister } from './userThunk';
-
-type TokenType = {
-  accessToken?: string | null;
-  refreshToken?: string | null;
-};
+import { userAccessImage, userAccessTokenLife, userNewRegister } from './userThunk';
 
 export interface UserType {
+  id: number | null;
   email: string;
   password: string;
+  age?: number;
   login: string;
-  profile: 'default' | File;
-  cover: 'default' | File;
-  tokens?: TokenType;
+  profile: 'default' | File | string;
+  cover: 'default' | File | string;
+  isAuth: boolean;
+  accessToken: string;
 }
 
 type StateType = {
@@ -23,15 +21,15 @@ type StateType = {
 
 const initialState: StateType = {
   user: {
-    email: '',
+    id: null,
+    email: 'Неавторизированный пользльзователь',
     password: '',
-    login: '',
+    age: 0,
+    login: 'Чепух',
     profile: 'default',
     cover: 'default',
-    tokens: {
-      accessToken: null,
-      refreshToken: null,
-    },
+    isAuth: false,
+    accessToken: 'null',
   },
   loading: 'idle',
 };
@@ -57,12 +55,57 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(userNewRegister.fulfilled, (state, action) => {
-        state.user = action.payload;
+        console.log('Ответ от API с токенами:', action.payload);
+
+        state.user = { ...action.payload };
+
+        if (action.payload.accessToken) {
+          localStorage.setItem('accessToken', action.payload.accessToken);
+          const { email, id } = JSON.parse(atob(localStorage.getItem('accessToken')!.split('.')[1]));
+          state.user.email = email;
+          state.user.id = id;
+          state.user.isAuth = true;
+          localStorage.setItem('user', JSON.stringify(state.user));
+          console.log('Сохранили accessToken в localStorage');
+        }
+
         state.loading = 'succeeded';
         state.error = null;
       })
       .addCase(userNewRegister.rejected, (state, action) => {
         state.loading = 'failed';
+        state.error = action.error.message || 'Unknown error';
+      })
+
+      .addCase(userAccessTokenLife.pending, (state) => {
+        state.loading = 'loading';
+        state.error = null;
+      })
+      .addCase(userAccessTokenLife.fulfilled, (state, action) => {
+        localStorage.setItem('accessToken', action.payload.accessToken); // всё ещё нужен accessToken для авторизации
+        state.loading = 'succeeded';
+        state.error = null;
+      })
+      .addCase(userAccessTokenLife.rejected, (state, action) => {
+        state.loading = 'failed';
+        localStorage.removeItem('accessToken');
+        state.user.isAuth = false;
+        state.error = action.error.message || 'Unknown error';
+      })
+
+      .addCase(userAccessImage.pending, (state) => {
+        state.loading = 'loading';
+        state.error = null;
+      })
+      .addCase(userAccessImage.fulfilled, (state, action) => {
+        state.user.profile = action.payload.image.profile;
+        state.user.cover = action.payload.image.cover;
+        state.loading = 'succeeded';
+        state.error = null;
+      })
+      .addCase(userAccessImage.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.user.isAuth = false;
         state.error = action.error.message || 'Unknown error';
       });
   },
