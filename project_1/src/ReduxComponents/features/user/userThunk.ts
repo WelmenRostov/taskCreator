@@ -1,7 +1,29 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { accessTokenLifeAPI, accessImageAPI, refreshAccessTokenAPI, registeringNewUserAPI } from '../../API/authAPI';
+import {
+  accessTokenLifeAPI,
+  accessImageAPI,
+  refreshAccessTokenAPI,
+  registeringNewUserAPI,
+  loginUserAPI,
+} from '../../API/authAPI';
 import { AxiosError } from 'axios';
 import type { UserType } from './authSlice';
+
+export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWithValue }) => {
+  try {
+    // Удаляем куки
+    document.cookie = 'refreshToken=; max-age=0; path=; domain=localhost; secure; SameSite=Lax;';
+    localStorage.removeItem('accessToken');
+
+    // Возвращаем null, чтобы сбросить состояние пользователя
+    return null; // Теперь это корректно, так как мы разрешили null
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return rejectWithValue(error.response?.data?.message || 'Error logout user');
+    }
+    return rejectWithValue('Failed to logout');
+  }
+});
 
 export const userNewRegister = createAsyncThunk('user/register', async (userData: FormData, { rejectWithValue }) => {
   try {
@@ -15,6 +37,22 @@ export const userNewRegister = createAsyncThunk('user/register', async (userData
     return rejectWithValue('Unknown error occurred');
   }
 });
+
+export const userLogin = createAsyncThunk(
+  'user/login',
+  async (userData: { email: string; password: string }, { rejectWithValue }) => {
+    try {
+      const response = await loginUserAPI(userData); // Теперь передаем объект вместо FormData
+      console.log(response);
+      return response; // Возвращаем успешный ответ
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data?.message || 'Error registering user');
+      }
+      return rejectWithValue('Unknown error occurred');
+    }
+  }
+);
 
 export const userAccessTokenLife = createAsyncThunk(
   'user/accessToken',

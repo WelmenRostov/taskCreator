@@ -16,9 +16,9 @@ export const fetchPostsThunk = createAsyncThunk(
 
 export const createPostThunk = createAsyncThunk(
   'post/createPost',
-  async ({ title, text }: { title: string; text: string }, thunkAPI) => {
+  async ({ title, text, token }: { title: string; text: string; token: string }, thunkAPI) => {
     try {
-      const data = await createTodos(title, text);
+      const data = await createTodos(title, text, token);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(`Ошибка при создании ${error}`);

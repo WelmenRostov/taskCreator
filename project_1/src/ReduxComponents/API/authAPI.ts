@@ -18,6 +18,31 @@ export const registeringNewUserAPI = async (userData: FormData) => {
   }
 };
 
+export const loginUserAPI = async (userData: { email: string; password: string }) => {
+  console.log('Отправка данных на сервер:', userData);
+  try {
+    const response = await axios.post(`${API_URL}/auth/login`, userData, {
+      headers: {
+        'Content-Type': 'application/json', // Указываем, что передаем JSON
+      },
+      withCredentials: true,
+    });
+    console.log('Ответ от сервера:', response.data); // Логируем ответ
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      console.error('Ошибка при запросе:', error.response?.data);
+      throw new Error(error.response?.data?.message || 'Error updating user data');
+    } else if (error instanceof Error) {
+      console.error('Ошибка при запросе:', error.message);
+      throw new Error(error.message || 'Unknown error occurred');
+    } else {
+      console.error('Неизвестная ошибка при запросе');
+      throw new Error('An unexpected error occurred');
+    }
+  }
+};
+
 export const accessTokenLifeAPI = (accessToken: string) =>
   axios.get(`${API_URL}/auth/me`, {
     headers: {

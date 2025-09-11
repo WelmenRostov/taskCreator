@@ -1,15 +1,22 @@
 import { colorShadow } from '../ReduxComponents/type/type';
 import { useLoadUser } from '../ReduxComponents/hooks/useLoadUser';
+import LoadSpinner from './LoadSpinner';
+import Error404Page from '../ReduxComponents/RoutersPage/Error404Page';
+import ProfileInfo from './ProfileInfo';
 
 const Profile = () => {
   const { user, loading, error } = useLoadUser();
-
-  if (loading) return <div>Загрузка...</div>;
-  if (error) return <div>Ошибка: {error}</div>;
+  if (loading) return <LoadSpinner />;
+  if (error)
+    return (
+      <>
+        <Error404Page />
+      </>
+    );
   if (!user) return <div>Пользователь не найден</div>;
 
   return (
-    <div>
+    <div className={`h-screen`}>
       <div>
         <div
           className={`pt-[20px] mx-auto h-[300px] bg-cover bg-center bg-no-repeat items-center`}
@@ -19,11 +26,13 @@ const Profile = () => {
             className={`mx-auto dark:${colorShadow} shadow-sl justify-center w-[200px] h-[200px] rounded-full bg-cover bg-center bg-no-repeat grid place-items-center`}
             style={{ backgroundImage: `url(${user.profile})` }}
           ></div>
-          <h3 className={`relative text-white text-center text-[30px] font-semibold rounded-full bg-indigo`}>
-            {user.email}
-          </h3>
+          {/*
+          <div className={`${colorShadow} ${colorBase}`}>
+            <h3 className={`relative text-white text-center text-[40px] font-semibold `}>{user.email}</h3>
+          </div>*/}
         </div>
       </div>
+      <ProfileInfo />
     </div>
   );
 };

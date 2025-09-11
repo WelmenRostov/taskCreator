@@ -19,9 +19,18 @@ export const fetchTodos = async (
   };
 };
 
-export const createTodos = async (title: string, text: string) => {
+export const createTodos = async (title: string, text: string, accessToken: string) => {
   try {
-    const response = await axios.post(`${API_URL}/todos`, { title, text });
+    const response = await axios.post(
+      `http://localhost:3002/todos`,
+      { title, text }, // Только данные задачи, без accessToken
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        withCredentials: true, // <- чтобы куки с refreshToken тоже отправлялись
+      }
+    );
     return response.data;
   } catch (error) {
     console.error('Ошибка при создании задачи:', error);

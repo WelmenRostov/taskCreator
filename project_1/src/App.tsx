@@ -4,6 +4,7 @@ import Registration from './components/Registration';
 import React from 'react';
 import UserPage from './ReduxComponents/RoutersPage/UserPage';
 import PrivateRoute from './components/PrivateRoute';
+import Error404Page from './ReduxComponents/RoutersPage/Error404Page';
 
 export const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ export const App: React.FC = () => {
           }
         />
         <Route path="/" element={<Navigate to="/signin" replace />} />
+        <Route path="*" element={<Error404Page />} />
       </Routes>
     </>
   );

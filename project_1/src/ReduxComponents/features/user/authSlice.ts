@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { userAccessImage, userAccessTokenLife, userNewRegister } from './userThunk';
+import { logoutUser, userAccessImage, userAccessTokenLife, userLogin, userNewRegister } from './userThunk';
 
 export interface UserType {
   id: number | null;
@@ -61,12 +61,18 @@ const userSlice = createSlice({
 
         if (action.payload.accessToken) {
           localStorage.setItem('accessToken', action.payload.accessToken);
-          const { email, id } = JSON.parse(atob(localStorage.getItem('accessToken')!.split('.')[1]));
-          state.user.email = email;
-          state.user.id = id;
-          state.user.isAuth = true;
+          const token = localStorage.getItem('accessToken');
+          if (token) {
+            try {
+              const { email, id } = JSON.parse(atob(token.split('.')[1]));
+              state.user.email = email;
+              state.user.id = id;
+              state.user.isAuth = true;
+            } catch (e) {
+              console.error('Ошибка при декодировании токена:', e);
+            }
+          }
           localStorage.setItem('user', JSON.stringify(state.user));
-          console.log('Сохранили accessToken в localStorage');
         }
 
         state.loading = 'succeeded';
@@ -106,6 +112,62 @@ const userSlice = createSlice({
       .addCase(userAccessImage.rejected, (state, action) => {
         state.loading = 'failed';
         state.user.isAuth = false;
+        state.error = action.error.message || 'Unknown error';
+      })
+
+      .addCase(userLogin.pending, (state) => {
+        state.loading = 'loading';
+        state.error = null;
+      })
+      .addCase(userLogin.fulfilled, (state, action) => {
+        console.log('Ответ от API с токенами:', action.payload);
+
+        state.user = { ...action.payload };
+
+        if (action.payload.accessToken) {
+          localStorage.setItem('accessToken', action.payload.accessToken);
+          const token = localStorage.getItem('accessToken');
+          if (token) {
+            try {
+              const { email, id } = JSON.parse(atob(token.split('.')[1]));
+              state.user.email = email;
+              state.user.id = id;
+              state.user.isAuth = true;
+            } catch (e) {
+              console.error('Ошибка при декодировании токена:', e);
+            }
+          }
+          localStorage.setItem('user', JSON.stringify(state.user));
+        }
+
+        state.loading = 'succeeded';
+        state.error = null;
+      })
+      .addCase(userLogin.rejected, (state, action) => {
+        state.loading = 'failed';
+        console.log('Ответ от API с токенами:', action.payload);
+        state.error = action.error.message || 'Unknown error';
+      })
+
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = 'loading';
+        state.error = null;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = {
+          id: null,
+          email: 'Неавторизированный пользльзователь',
+          password: '',
+          age: 0,
+          login: '',
+          profile: 'default',
+          cover: 'default',
+          isAuth: false,
+          accessToken: 'null',
+        };
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.loading = 'failed';
         state.error = action.error.message || 'Unknown error';
       });
   },

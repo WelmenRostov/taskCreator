@@ -9,6 +9,8 @@ const TaskForm = () => {
   const { modal, setModal, handleAddPost } = usePostContext();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const token = localStorage.getItem('accessToken') || 'undefined';
+
   const dispatch = useAppDispatch(); // <- типизированный dispatch
   // Функция для изменения высоты textarea по мере ввода
   const adjustTextareaHeight = () => {
@@ -39,7 +41,7 @@ const TaskForm = () => {
       e.preventDefault();
       return;
     }
-    const result = await dispatch(createPostThunk({ title: title.value, text: text.value })).unwrap();
+    const result = await dispatch(createPostThunk({ title: title.value, text: text.value, token: token })).unwrap();
     if (result) {
       title.value = '';
       text.value = '';

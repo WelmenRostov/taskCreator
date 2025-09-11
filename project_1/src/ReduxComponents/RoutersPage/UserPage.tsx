@@ -6,7 +6,6 @@ import TaskList from '../TaskList';
 import { Pagination } from '../../features/counter/Pagination';
 import TaskForm from '../../components/TaskForm';
 import { lazy, Suspense } from 'react';
-import LoadSpinner from '../../components/LoadSpinner';
 import Profile from '../../components/Profile';
 
 const PostList = lazy(() => import('../../components/PostList'));
@@ -24,7 +23,7 @@ const UserPage = () => {
               element={
                 <>
                   <div
-                    className={`relative rounded-b-[1vw] pl-3 pr-2 outline-black/5 bg-opacity-10 h-auto w-auto ${colorBase} ${colorShadow}`}
+                    className={`relative rounded-b-[1vw] pl-3 pr-2 outline-black/5 bg-opacity-10 h-auto w-auto ${colorBase} ${colorShadow} overflow-hidden mb-[20px]`}
                   >
                     <TaskList />
                   </div>
@@ -37,7 +36,7 @@ const UserPage = () => {
               path="tasks"
               element={
                 <>
-                  <div className="relative bg-indigo-500 shadow-lg shadow-indigo-500/50 border-2 border-indigo-600 rounded-b-[1vw] pl-3 pr-2 outline-black/5 dark:bg-gray-800 bg-opacity-10 h-auto w-auto">
+                  <div className="relative bg-indigo-500 shadow-lg shadow-indigo-500/50 border-2 border-indigo-600 rounded-b-[1vw] pl-3 pr-2 outline-black/5 dark:bg-gray-800 bg-opacity-10 h-auto w-auto overflow-hidden mb-[20px]">
                     <Suspense
                       fallback={
                         <div className="flex justify-center items-center mt-10 mb-10">
@@ -56,8 +55,8 @@ const UserPage = () => {
             <Route
               path="profile"
               element={
-                <div className={`h-screen ${colorBase} ${colorShadow} rounded-b-[1vw] border-t-0 `}>
-                  {<Profile /> || <LoadSpinner />}
+                <div className={` ${colorBase} ${colorShadow} rounded-b-[1vw] border-t-0  mb-[20px] pb-5 h-auto`}>
+                  <Profile />
                 </div>
               }
             />
