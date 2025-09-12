@@ -16,7 +16,7 @@ export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWith
     localStorage.removeItem('accessToken');
 
     // Возвращаем null, чтобы сбросить состояние пользователя
-    return null; // Теперь это корректно, так как мы разрешили null
+    return null;
   } catch (error) {
     if (error instanceof AxiosError) {
       return rejectWithValue(error.response?.data?.message || 'Error logout user');

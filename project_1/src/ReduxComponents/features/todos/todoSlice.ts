@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Post } from '../../type/type';
-import { fetchTodos as fetchTodosApi } from '../../API/todoAPI';
+import { activEditor, fetchTodos, saveEditor } from './todoThunk';
 
 type TodoState = {
   items: Post[];
@@ -18,23 +18,17 @@ const initialState: TodoState = {
   page: 1,
 };
 
-export const fetchTodos = createAsyncThunk(
-  'todo/fetchTodos',
-  async (params: { page: number; limit: number; filter: 'pending' | 'fulfilled' | 'rejected' | 'all' }, thunkAPI) => {
-    try {
-      return await fetchTodosApi(params.page, params.limit, params.filter);
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.message);
-    }
-  }
-);
-
 const todoSlice = createSlice({
   name: 'todo',
   initialState,
-  reducers: {},
+  reducers: {
+    addTodo: (state, action: PayloadAction<Post>) => {
+      state.items.unshift(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
+      // Загружаем список
       .addCase(fetchTodos.pending, (state) => {
         state.status = 'loading';
       })
@@ -47,8 +41,39 @@ const todoSlice = createSlice({
       .addCase(fetchTodos.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
+      })
+
+      // Сохраняем изменения (редактор)
+      .addCase(saveEditor.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const { id, title, text } = action.payload;
+
+        const index = state.items.findIndex((p) => p.id === id);
+        if (index !== -1) {
+          state.items[index] = {
+            ...state.items[index],
+            title: title || state.items[index].title,
+            text: text || state.items[index].text,
+            editable: false,
+          };
+        }
+      })
+
+      // Активируем редактор
+      .addCase(activEditor.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const { id } = action.payload;
+
+        const index = state.items.findIndex((p) => p.id === id);
+        if (index !== -1) {
+          state.items[index] = {
+            ...state.items[index],
+            editable: true,
+          };
+        }
       });
   },
 });
 
+export const { addTodo } = todoSlice.actions;
 export default todoSlice.reducer;

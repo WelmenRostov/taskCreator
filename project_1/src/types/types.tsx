@@ -4,7 +4,7 @@ export interface Post {
   title: string;
   text: string;
   data: string;
-  status: 'pending' | 'fulfilled' | 'rejected';
+  conditionTasks: 'pending' | 'fulfilled' | 'rejected';
   editable?: boolean;
 }
 
