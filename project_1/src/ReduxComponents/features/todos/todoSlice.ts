@@ -8,6 +8,10 @@ type TodoState = {
   error: string | null;
   totalPages: number;
   page: number;
+  limit: number;
+  filterStatus: string;
+  searchText: string;
+  sortBy: string;
 };
 
 const initialState: TodoState = {
@@ -16,12 +20,31 @@ const initialState: TodoState = {
   error: null,
   totalPages: 0,
   page: 1,
+  limit: 5, // 20 по умолчанию
+  filterStatus: 'pending',
+  sortBy: 'new',
+  searchText: '',
 };
 
 const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
+    setPage: (state, action: PayloadAction<number>) => {
+      state.page = action.payload;
+    },
+    setLimit: (state, action: PayloadAction<number>) => {
+      state.limit = action.payload;
+    },
+    setFilterStatus: (state, action: PayloadAction<string>) => {
+      state.filterStatus = action.payload;
+    },
+    setSearchText: (state, action: PayloadAction<string>) => {
+      state.searchText = action.payload;
+    },
+    setSortBy: (state, action: PayloadAction<string>) => {
+      state.sortBy = action.payload;
+    },
     addTodo: (state, action: PayloadAction<Post>) => {
       state.items.unshift(action.payload);
     },
@@ -75,5 +98,5 @@ const todoSlice = createSlice({
   },
 });
 
-export const { addTodo } = todoSlice.actions;
+export const { addTodo, setPage, setFilterStatus, setLimit, setSearchText, setSortBy } = todoSlice.actions;
 export default todoSlice.reducer;

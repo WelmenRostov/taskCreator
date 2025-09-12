@@ -31,7 +31,7 @@ export function Pagination() {
           «
         </button>
         <span className={'btn bg-indigo-800'}>
-          Страница {page} из {totalPage}
+          ХУй {page} из {totalPage}
         </span>
         <button className={'btn bg-indigo-800'} onClick={handleNextPage} disabled={page === totalPage}>
           »

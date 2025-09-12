@@ -7,6 +7,7 @@ import { Pagination } from '../../features/counter/Pagination';
 import TaskForm from '../../components/TaskForm';
 import { lazy, Suspense } from 'react';
 import Profile from '../../components/Profile';
+import { PaginationR } from '../PaginationR';
 
 const PostList = lazy(() => import('../../components/PostList'));
 
@@ -27,7 +28,7 @@ const UserPage = () => {
                   >
                     <TaskList />
                   </div>
-                  <Pagination />
+                  <PaginationR />
                   <TaskForm />
                 </>
               }

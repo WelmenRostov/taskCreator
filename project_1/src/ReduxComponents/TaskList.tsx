@@ -6,33 +6,40 @@ import { useEffect } from 'react';
 import { fetchTodos } from './features/todos/todoThunk';
 import PostItem from './PostItem';
 import LoadSpinner from '../components/LoadSpinner';
+import { selectFilteredSortedPaginated } from './services/selectFilteredSortedPaginated';
 
 const TaskList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { items, status, error } = useSelector((state: RootState2) => state.todo);
+  const { status, error, page } = useSelector((state: RootState2) => state.todo);
+  const tasks = useSelector(selectFilteredSortedPaginated);
+  console.log(tasks.length);
 
+  const limit = useSelector((state: RootState2) => state.todo.limit);
   useEffect(() => {
-    if (!items || items.length === 0) {
-      dispatch(fetchTodos({ page: 1, limit: 10, filter: 'pending' }));
-    }
-  }, [dispatch, items]);
-
+    dispatch(fetchTodos({ page: 1, limit, filter: 'pending' }));
+  }, [dispatch, limit]);
   return (
     <>
       <div className="h-full">
-        <ViewTasks />
         <ParameterViewingPanel />
       </div>
 
       {status === 'succeeded' ? (
         <>
-          {items.length !== 0 ? (
-            items.map((post, i) => (
-              <PostItem key={post.id} {...post} order={i + 1} /> // 👈 добавляем order
+          {tasks.length !== 0 ? (
+            tasks.map((task, i) => (
+              <PostItem
+                key={task.id}
+                {...task}
+                order={(page - 1) * limit + i + 1} // <-- глобальная нумерация
+              />
             ))
           ) : (
             <div className="p-10 place-self-center">
-              <h1>Задачи отсутствуют...</h1>
+              <h1 className="text-4xl">
+                Задачи отсутствуют
+                <span className="loading loading-dots loading-xl mt-[20px] gap-[20px]"></span>
+              </h1>
             </div>
           )}
         </>

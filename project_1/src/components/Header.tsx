@@ -2,14 +2,17 @@ import { useLoadUser } from '../ReduxComponents/hooks/useLoadUser';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../ReduxComponents/features/user/userThunk';
 import type { AppDispatch } from '../app/store';
+import { useLocalStorageCleaner } from '../ReduxComponents/hooks/useLocalStorageCleaner';
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useLoadUser();
+  const { clearStorage } = useLocalStorageCleaner();
 
   // Функция выхода
   const handleLogout = () => {
     console.log('logout');
+    clearStorage();
     dispatch(logoutUser());
   };
 

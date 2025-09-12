@@ -4,6 +4,7 @@ import MyButton from '../../components/UI/button/MyButton';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../../app/store';
+import { motion } from 'framer-motion';
 import { saveEditor } from '../features/todos/todoThunk';
 
 interface EditorProps extends Post {
@@ -34,7 +35,7 @@ const PostItemEditor = React.memo(({ id, data, order, title: initialTitle, text:
   };
 
   return (
-    <div>
+    <motion.div layout className="">
       <div
         className={
           'bg-gray-800/30 shadow-lg shadow-orange-400/50 border-2 border-orange-400 rounded-[1vw] mb-5 p-5 outline-black/5 dark:bg-gray-800 bg-opacity-10 overflow-hidden resize-none'
@@ -78,7 +79,7 @@ const PostItemEditor = React.memo(({ id, data, order, title: initialTitle, text:
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 });
 
