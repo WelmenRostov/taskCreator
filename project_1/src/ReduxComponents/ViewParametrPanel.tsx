@@ -11,7 +11,6 @@ const ParameterViewingPanel = () => {
   const sortBy = useSelector((state: RootState2) => state.todo.sortBy);
   const limit = useSelector((state: RootState2) => state.todo.limit);
   const [search, setSearch] = useState('');
-  console.log('current limit:', limit);
   const handleSearch = () => {
     dispatch(setSearchText(search));
   };

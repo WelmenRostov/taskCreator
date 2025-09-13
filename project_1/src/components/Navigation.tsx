@@ -17,12 +17,12 @@ const Navigation = () => {
           </NavLink>
           <NavLink to="/user/tasks">
             {({ isActive }) => (
-              <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Задачи</MyButton>
+              <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Настройки</MyButton>
             )}
           </NavLink>
           <NavLink to="/user/redux">
             {({ isActive }) => (
-              <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Настройки</MyButton>
+              <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Задачи</MyButton>
             )}
           </NavLink>
           <NavLink to="/registration">

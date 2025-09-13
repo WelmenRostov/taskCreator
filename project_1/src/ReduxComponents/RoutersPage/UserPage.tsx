@@ -3,13 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
 import { colorBase, colorShadow } from '../type/type';
 import TaskList from '../TaskList';
-import { Pagination } from '../../features/counter/Pagination';
 import TaskForm from '../../components/TaskForm';
-import { lazy, Suspense } from 'react';
 import Profile from '../../components/Profile';
 import { PaginationR } from '../PaginationR';
-
-const PostList = lazy(() => import('../../components/PostList'));
 
 const UserPage = () => {
   return (
@@ -33,7 +29,7 @@ const UserPage = () => {
                 </>
               }
             />
-            <Route
+            {/*<Route
               path="tasks"
               element={
                 <>
@@ -48,11 +44,10 @@ const UserPage = () => {
                       <PostList />
                     </Suspense>
                   </div>
-                  <Pagination />
                   <TaskForm />
                 </>
               }
-            />
+            />*/}
             <Route
               path="profile"
               element={

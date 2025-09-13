@@ -2,15 +2,11 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // localStorage для веба
 
-import counterReducer from '../features/counter/counterSlice';
-import postReducer from '../features/postReducer/postReducer';
 import todoSlice from '../ReduxComponents/features/todos/todoSlice';
 import userSlice from '../ReduxComponents/features/user/authSlice';
 
 // объединяем редьюсеры
 const rootReducer = combineReducers({
-  counter: counterReducer,
-  post: postReducer,
   todo: todoSlice,
   user: userSlice,
 });

@@ -10,15 +10,13 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const PublicPaths = ['/signin', '/registration'];
 
   useEffect(() => {
-    console.log('рендер PrivateRoute');
     const checkToken = async () => {
       try {
         const token = localStorage.getItem('accessToken') || 'undefined';
         if (!token) return setIsValid(false);
 
-        await accessTokenLifeAPI(token);
+        await accessTokenLifeAPI();
 
-        console.log('Все заебумба, работаем', token);
         localStorage.setItem('accessToken', token);
         setIsValid(true);
       } catch (error) {
@@ -31,7 +29,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
           localStorage.setItem('accessToken', newAccessToken);
 
           // Повторная проверка с новым токеном
-          await accessTokenLifeAPI(newAccessToken);
+          await accessTokenLifeAPI();
           setIsValid(true);
         } catch (refreshError) {
           console.log('Refresh token не сработал, отправляем на логин', refreshError);

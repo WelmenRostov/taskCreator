@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Post } from '../../type/type';
-import { activEditor, fetchTodos, saveEditor } from './todoThunk';
+import { activEditor, addNewTask, fetchTodos, saveEditor } from './todoThunk';
 
 type TodoState = {
   items: Post[];
@@ -94,6 +94,11 @@ const todoSlice = createSlice({
             editable: true,
           };
         }
+      })
+
+      .addCase(addNewTask.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items.unshift(action.payload); // добавляем задачу в начало
       });
   },
 });

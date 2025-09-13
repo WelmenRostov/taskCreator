@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { activEditorAPI, fetchTodosAPI, saveEditorAPI } from '../../API/todoAPI';
+import { activEditorAPI, addNewTaskAPI, fetchTodosAPI, saveEditorAPI } from '../../API/todoAPI';
 import type { SaveEditorParams } from '../../type/type';
 
 export const fetchTodos = createAsyncThunk(
@@ -39,3 +39,16 @@ export const activEditor = createAsyncThunk('todo/activEditor', async ({ id }: S
     return thunkAPI.rejectWithValue(message);
   }
 });
+
+export const addNewTask = createAsyncThunk(
+  'todo/addNewTask',
+  async ({ text, title }: { text: string; title: string }, thunkAPI) => {
+    try {
+      const newTask = await addNewTaskAPI(title, text);
+      return newTask;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);

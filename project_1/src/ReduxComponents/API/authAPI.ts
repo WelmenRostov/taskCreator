@@ -1,11 +1,9 @@
-import axios, { AxiosError } from 'axios';
-import { API_URL } from '../type/type';
+import { AxiosError } from 'axios';
+import api from '../features/interceptor';
 
 export const registeringNewUserAPI = async (userData: FormData) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/register`, userData, {
-      withCredentials: true,
-    });
+    const response = await api.post(`/auth/register`, userData);
     return response.data;
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
@@ -21,12 +19,7 @@ export const registeringNewUserAPI = async (userData: FormData) => {
 export const loginUserAPI = async (userData: { email: string; password: string }) => {
   console.log('Отправка данных на сервер:', userData);
   try {
-    const response = await axios.post(`${API_URL}/auth/login`, userData, {
-      headers: {
-        'Content-Type': 'application/json', // Указываем, что передаем JSON
-      },
-      withCredentials: true,
-    });
+    const response = await api.post(`/auth/login`, userData);
     console.log('Ответ от сервера:', response.data); // Логируем ответ
     return response.data;
   } catch (error: unknown) {
@@ -43,26 +36,20 @@ export const loginUserAPI = async (userData: { email: string; password: string }
   }
 };
 
-export const accessTokenLifeAPI = (accessToken: string) =>
-  axios.get(`${API_URL}/auth/me`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+export const accessTokenLifeAPI = () => api.get(`/auth/me`);
 
 export const refreshAccessTokenAPI = () =>
-  axios
-    .post(`${API_URL}/auth/refresh`, null, {
+  api
+    .post(`/auth/refresh`, null, {
       withCredentials: true,
     })
     .catch((err) => {
-      console.log('DEBUG ошибка refresh:', err.toJSON());
       throw err;
     });
 
 export const accessImageAPI = async (id: number) => {
   try {
-    const response = await axios.get(`${API_URL}/auth/image/${id}`);
+    const response = await api.get(`/auth/image/${id}`);
     return response.data;
   } catch (error: unknown) {
     if (error instanceof AxiosError) {

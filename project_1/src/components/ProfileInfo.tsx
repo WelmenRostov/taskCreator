@@ -3,7 +3,6 @@ import { useLoadUser } from '../ReduxComponents/hooks/useLoadUser';
 
 const ProfileInfo = () => {
   const { user } = useLoadUser();
-  console.log(user);
   return (
     <>
       <div className={`${colorBase} mt-10`}>

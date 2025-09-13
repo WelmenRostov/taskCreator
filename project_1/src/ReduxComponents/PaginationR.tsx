@@ -22,7 +22,7 @@ export function PaginationR() {
   };
 
   return (
-    <div className="absolute pagination left-1/2 -translate-x-1/2 mt-2">
+    <div className="absolute pagination left-1/2 -translate-x-1/2 -mt-[10px]">
       <div className="flex items-center gap-2">
         <button className="btn bg-indigo-800" onClick={handlePrev} disabled={page === 1}>
           «

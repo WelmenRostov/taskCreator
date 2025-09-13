@@ -14,12 +14,10 @@ export interface SaveEditorParams {
   text?: string;
 }
 
-export type TStatus = 'pending' | 'fulfilled' | 'rejected';
-
-export interface statusRequest {
+export interface ApiResponse {
+  data: Post; // озвращаемый объект — это один пост, а не массив
+  totalPages: number;
   page: number;
-  limit: number;
-  status: 'pending' | 'fulfilled' | 'rejected';
 }
 
 const colorDarkText = 'dark:text-zinc-200 dark:bg-gray-800';

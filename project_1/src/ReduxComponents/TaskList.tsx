@@ -1,5 +1,4 @@
 import ParameterViewingPanel from './ViewParametrPanel';
-import ViewTasks from './ViewTasks';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState2 } from '../app/store';
 import { useEffect } from 'react';
@@ -7,12 +6,12 @@ import { fetchTodos } from './features/todos/todoThunk';
 import PostItem from './PostItem';
 import LoadSpinner from '../components/LoadSpinner';
 import { selectFilteredSortedPaginated } from './services/selectFilteredSortedPaginated';
+import ViewTasks from '../components/ViewTasks';
 
 const TaskList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { status, error, page } = useSelector((state: RootState2) => state.todo);
   const tasks = useSelector(selectFilteredSortedPaginated);
-  console.log(tasks.length);
 
   const limit = useSelector((state: RootState2) => state.todo.limit);
   useEffect(() => {
@@ -20,10 +19,10 @@ const TaskList = () => {
   }, [dispatch, limit]);
   return (
     <>
+      <ViewTasks />
       <div className="h-full">
         <ParameterViewingPanel />
       </div>
-
       {status === 'succeeded' ? (
         <>
           {tasks.length !== 0 ? (
@@ -38,7 +37,7 @@ const TaskList = () => {
             <div className="p-10 place-self-center">
               <h1 className="text-4xl">
                 Задачи отсутствуют
-                <span className="loading loading-dots loading-xl mt-[20px] gap-[20px]"></span>
+                <span className="loading loading-dots loading-md mt-[20px] gap-[20px]"></span>
               </h1>
             </div>
           )}

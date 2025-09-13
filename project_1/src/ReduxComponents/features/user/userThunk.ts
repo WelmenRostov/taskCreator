@@ -58,7 +58,7 @@ export const userAccessTokenLife = createAsyncThunk(
   'user/accessToken',
   async (tokens: { accessToken: string }, { rejectWithValue }) => {
     try {
-      const response = await accessTokenLifeAPI(tokens.accessToken);
+      const response = await accessTokenLifeAPI();
       return {
         accessToken: tokens.accessToken,
         user: response.data,

@@ -9,16 +9,13 @@ export const selectFilteredSortedPaginated = createSelector(
   (state: RootState2) => state.todo.sortBy,
   (state: RootState2) => state.todo.page,
   (state: RootState2) => state.todo.limit,
-  (items: Post[], searchText, filterStatus, sortBy, page, limit) => {
-    console.log('items', items);
+  (items: Post[], searchText, filterStatus, sortBy) => {
     let filtered = [...items];
-    console.log('filtered 1', filtered);
     // Фильтр по статусу
     if (filterStatus) {
       filtered = filtered.filter((item) => item.conditionTasks === filterStatus);
     }
 
-    console.log('filtered 2', filtered);
     // Поиск по тексту и заголовку
     const search = searchText?.trim().toLowerCase() ?? '';
     if (search) {
@@ -27,7 +24,6 @@ export const selectFilteredSortedPaginated = createSelector(
       );
     }
 
-    console.log('filtered 3', filtered);
     // Сортировка
     filtered.sort((a, b) => {
       if (sortBy === 'new') return new Date(b.data).getTime() - new Date(a.data).getTime();
@@ -36,8 +32,6 @@ export const selectFilteredSortedPaginated = createSelector(
       if (sortBy === 'text') return a.text.localeCompare(b.text);
       return 0;
     });
-    console.log('page', page, 'limit', limit, 'filtered.length', filtered.length);
-    console.log('filtered 4', filtered);
     // Пагинация
     return filtered;
   }

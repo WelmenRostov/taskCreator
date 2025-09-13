@@ -1,18 +1,10 @@
 import { type FormEvent, useEffect, useRef } from 'react';
 import MyButton from './UI/button/MyButton.tsx';
-import clsx from 'clsx';
 import MyTextarea from './UI/textarear/MyTextarea';
-import { useAppDispatch, usePostContext } from '../context/usePostContext';
-import { createPostThunk } from '../features/postReducer/postThunks';
-import { addTodo } from '../ReduxComponents/features/todos/todoSlice';
 
 const TaskForm = () => {
-  const { modal, setModal } = usePostContext();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const token = localStorage.getItem('accessToken') || 'undefined';
-
-  const dispatch = useAppDispatch(); // <- типизированный dispatch
   // Функция для изменения высоты textarea по мере ввода
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
@@ -25,14 +17,6 @@ const TaskForm = () => {
     }
   };
 
-  const setModalFunctyon = (): void => {
-    setModal(false);
-  };
-
-  const visibleStatus = clsx('', {
-    hidden: !modal,
-  });
-
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -41,39 +25,15 @@ const TaskForm = () => {
     const text = form.elements.namedItem('text') as HTMLTextAreaElement;
 
     if (!title.value.trim() || !text.value.trim()) return;
-
-    try {
-      // 1. Создаём задачу на сервере
-      const newPost = await dispatch(createPostThunk({ title: title.value, text: text.value, token })).unwrap();
-
-      // 2. Добавляем её в Redux, чтобы список обновился
-      dispatch(
-        addTodo({
-          title: newPost.title,
-          text: newPost.text,
-          count: 1,
-          data: new Date().toISOString(),
-          conditionTasks: 'pending',
-          id: newPost.id || +new Date(),
-          editable: false,
-        })
-      );
-
-      // 3. Сбрасываем форму
-      title.value = '';
-      text.value = '';
-
-      // 4. Закрываем модалку
-      setModal(false);
-    } catch (err) {
-      console.error('Ошибка создания задачи:', err);
-    }
   };
 
+  const visibleStatus = 'hidden';
+
   useEffect(() => {
-    if (modal) {
+    const mam = false;
+    if (mam) {
       // запретить скролл
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = '';
     } else {
       // вернуть как было
       document.body.style.overflow = '';
@@ -83,15 +43,11 @@ const TaskForm = () => {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [modal]);
-
+  });
   return (
-    <div className="">
-      <form onSubmit={onSubmit} className={`${visibleStatus} z-10`}>
-        <div
-          onClick={setModalFunctyon}
-          className="overflow-hidden resize-none fixed top-0 left-0 w-full h-[200%] bg-indigo-950 opacity-85 "
-        ></div>
+    <div className={`${visibleStatus}`}>
+      <form onSubmit={onSubmit} className={`z-10`}>
+        <div className="overflow-hidden resize-none fixed top-0 left-0 w-full h-[200%] bg-indigo-950 opacity-85 "></div>
         <div className="bg-indigo-500 shadow-lg shadow-indigo-500/50 w-[400px] item-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-indigo-600 rounded-4xl max-w-sm mx-auto p-6 outline-black/5 dark:bg-gray-800 bg-opacity-50">
           <h2 className="text-2xl font-semibold text-center mb-4">Задача:</h2>
           <input
