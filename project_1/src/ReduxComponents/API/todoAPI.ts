@@ -5,7 +5,7 @@ import api from '../features/interceptor';
 export const fetchTodosAPI = async (
   page: number,
   limit: number,
-  filter: 'pending' | 'fulfilled' | 'rejected' | 'all'
+  filter: 'pending' | 'fulfilled' | 'rejected'
 ): Promise<{ data: Post[]; totalPages: number; page: number }> => {
   const response = await api.get(`/todos`, {
     params: { page, limit, filter },

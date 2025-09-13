@@ -5,19 +5,27 @@ import { fetchTodos } from './features/todos/todoThunk';
 
 export function PaginationR() {
   const dispatch = useDispatch<AppDispatch>();
-  const { page, limit, totalPages } = useSelector((state: RootState2) => state.todo);
+  const { page, limit, totalPages, filterStatus } = useSelector((state: RootState2) => state.todo);
 
-  const handlePrev = () => {
-    if (page > 1) {
-      dispatch(setPage(page - 1));
-      dispatch(fetchTodos({ page: page - 1, limit, filter: 'pending' }));
+  // Приводим к типу, который ожидает fetchTodos
+  const filter: 'pending' | 'fulfilled' | 'rejected' =
+    filterStatus === 'pending' || filterStatus === 'fulfilled' || filterStatus === 'rejected'
+      ? filterStatus
+      : 'pending';
+
+  const handleNext = () => {
+    const nextPage = Math.min(page + 1, totalPages);
+    if (nextPage !== page) {
+      dispatch(setPage(nextPage));
+      dispatch(fetchTodos({ page: nextPage, limit, filter }));
     }
   };
 
-  const handleNext = () => {
-    if (page < totalPages) {
-      dispatch(setPage(page + 1));
-      dispatch(fetchTodos({ page: page + 1, limit, filter: 'pending' }));
+  const handlePrev = () => {
+    const prevPage = Math.max(page - 1, 1);
+    if (prevPage !== page) {
+      dispatch(setPage(prevPage));
+      dispatch(fetchTodos({ page: prevPage, limit, filter }));
     }
   };
 

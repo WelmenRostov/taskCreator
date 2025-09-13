@@ -4,7 +4,7 @@ import type { SaveEditorParams } from '../../type/type';
 
 export const fetchTodos = createAsyncThunk(
   'todo/fetchTodos',
-  async (params: { page: number; limit: number; filter: 'pending' | 'fulfilled' | 'rejected' | 'all' }, thunkAPI) => {
+  async (params: { page: number; limit: number; filter: 'pending' | 'fulfilled' | 'rejected' }, thunkAPI) => {
     try {
       return await fetchTodosAPI(params.page, params.limit, params.filter);
     } catch (err: unknown) {

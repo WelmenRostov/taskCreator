@@ -9,7 +9,7 @@ type TodoState = {
   totalPages: number;
   page: number;
   limit: number;
-  filterStatus: string;
+  filterStatus: 'pending' | 'rejected' | 'fulfilled';
   searchText: string;
   sortBy: string;
 };
@@ -36,7 +36,7 @@ const todoSlice = createSlice({
     setLimit: (state, action: PayloadAction<number>) => {
       state.limit = action.payload;
     },
-    setFilterStatus: (state, action: PayloadAction<string>) => {
+    setFilterStatus: (state, action: PayloadAction<'pending' | 'rejected' | 'fulfilled'>) => {
       state.filterStatus = action.payload;
     },
     setSearchText: (state, action: PayloadAction<string>) => {

@@ -10,13 +10,13 @@ import ViewTasks from '../components/ViewTasks';
 
 const TaskList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { status, error, page } = useSelector((state: RootState2) => state.todo);
+  const { status, error, page, filterStatus } = useSelector((state: RootState2) => state.todo);
   const tasks = useSelector(selectFilteredSortedPaginated);
 
   const limit = useSelector((state: RootState2) => state.todo.limit);
   useEffect(() => {
-    dispatch(fetchTodos({ page: 1, limit, filter: 'pending' }));
-  }, [dispatch, limit]);
+    dispatch(fetchTodos({ page: 1, limit, filter: filterStatus }));
+  }, [dispatch, limit, filterStatus]);
   return (
     <>
       <ViewTasks />
