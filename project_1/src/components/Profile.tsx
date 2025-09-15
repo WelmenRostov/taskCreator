@@ -5,15 +5,15 @@ import Error404Page from '../ReduxComponents/RoutersPage/Error404Page';
 import ProfileInfo from './ProfileInfo';
 
 const Profile = () => {
-  const { user, loading, error } = useLoadUser();
+  const { user, loading } = useLoadUser();
   if (loading) return <LoadSpinner />;
-  if (error)
+
+  if (!user)
     return (
       <>
         <Error404Page />
       </>
     );
-  if (!user) return <div>Пользователь не найден</div>;
 
   return (
     <div className={`h-screen`}>

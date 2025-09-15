@@ -44,7 +44,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         console.error('Refresh token invalid', refreshError);
         localStorage.removeItem('accessToken');
-        window.location.href = '/login'; // редирект на логин
+        window.location.href = '/signin'; // редирект на логин
       }
     }
 

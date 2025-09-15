@@ -49,14 +49,14 @@ const ParameterViewingPanel = () => {
       </div>
 
       {/* Поиск */}
-      <div className="flex justify-between items-center ml-[10px]">
+      <div className="flex justify-between items-center ml-[10px] m-2">
         <input
           placeholder="Поиск..."
           className="min-w-[200px] rounded-[1vw] p-2 bg-indigo-800 text-white"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <MyButton additionalStyle="m-2 btn btn-soft" onClick={handleSearch}>
+        <MyButton additionalStyle=" btn btn-soft" onClick={handleSearch}>
           Поиск
         </MyButton>
       </div>

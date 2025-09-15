@@ -42,14 +42,11 @@ export const userLogin = createAsyncThunk(
   'user/login',
   async (userData: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await loginUserAPI(userData); // Теперь передаем объект вместо FormData
-      console.log(response);
-      return response; // Возвращаем успешный ответ
-    } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data?.message || 'Error registering user');
-      }
-      return rejectWithValue('Unknown error occurred');
+      const response = await loginUserAPI(userData);
+      return response;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(error.response?.data?.message || 'Ошибка входа');
     }
   }
 );

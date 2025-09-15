@@ -62,3 +62,41 @@ export const activEditorAPI = async (id: number): Promise<ApiResponse> => {
     }
   }
 };
+
+export const activFulfielledAPI = async (id: number): Promise<ApiResponse> => {
+  try {
+    const response = await api.put(`/todo/fulfielled`, {
+      id,
+    });
+    return {
+      data: response.data.data, // Теперь возвращаем один обновленный пост
+      totalPages: response.data.totalPages,
+      page: response.data.page,
+    };
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw new Error(err.response?.data?.message || 'Unknown API error');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+};
+
+export const activRejectedAPI = async (id: number): Promise<ApiResponse> => {
+  try {
+    const response = await api.put(`/todo/rejected`, {
+      id,
+    });
+    return {
+      data: response.data.data, // Теперь возвращаем один обновленный пост
+      totalPages: response.data.totalPages,
+      page: response.data.page,
+    };
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw new Error(err.response?.data?.message || 'Unknown API error');
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+};

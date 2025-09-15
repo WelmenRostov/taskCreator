@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Post } from '../../type/type';
-import { activEditor, addNewTask, fetchTodos, saveEditor } from './todoThunk';
+import { activEditor, activFulfielled, activRejected, addNewTask, fetchTodos, saveEditor } from './todoThunk';
 
 type TodoState = {
   items: Post[];
@@ -81,7 +81,6 @@ const todoSlice = createSlice({
           };
         }
       })
-
       // Активируем редактор
       .addCase(activEditor.fulfilled, (state, action) => {
         state.status = 'succeeded';
@@ -92,6 +91,32 @@ const todoSlice = createSlice({
           state.items[index] = {
             ...state.items[index],
             editable: true,
+          };
+        }
+      })
+
+      .addCase(activFulfielled.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const { id } = action.payload;
+
+        const index = state.items.findIndex((p) => p.id === id);
+        if (index !== -1) {
+          state.items[index] = {
+            ...state.items[index],
+            conditionTasks: 'fulfilled',
+          };
+        }
+      })
+
+      .addCase(activRejected.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const { id } = action.payload;
+
+        const index = state.items.findIndex((p) => p.id === id);
+        if (index !== -1) {
+          state.items[index] = {
+            ...state.items[index],
+            conditionTasks: 'rejected',
           };
         }
       })

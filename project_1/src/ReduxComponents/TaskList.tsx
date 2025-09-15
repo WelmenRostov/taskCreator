@@ -26,13 +26,7 @@ const TaskList = () => {
       {status === 'succeeded' ? (
         <>
           {tasks.length !== 0 ? (
-            tasks.map((task, i) => (
-              <PostItem
-                key={task.id}
-                {...task}
-                order={(page - 1) * limit + i + 1} // <-- глобальная нумерация
-              />
-            ))
+            tasks.map((task, i) => <PostItem key={task.id} {...task} order={(page - 1) * limit + i + 1} />)
           ) : (
             <div className="p-10 place-self-center">
               <h1 className="text-4xl">

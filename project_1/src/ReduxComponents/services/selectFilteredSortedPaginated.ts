@@ -11,10 +11,6 @@ export const selectFilteredSortedPaginated = createSelector(
   (state: RootState2) => state.todo.limit,
   (items: Post[], searchText, filterStatus, sortBy) => {
     let filtered = [...items];
-    // Фильтр по статусу
-    if (filterStatus) {
-      filtered = filtered.filter((item) => item.conditionTasks === filterStatus);
-    }
 
     // Поиск по тексту и заголовку
     const search = searchText?.trim().toLowerCase() ?? '';
@@ -22,6 +18,10 @@ export const selectFilteredSortedPaginated = createSelector(
       filtered = filtered.filter(
         (item) => item.title.toLowerCase().includes(search) || item.text.toLowerCase().includes(search)
       );
+    }
+    // Фильтр по статусу
+    if (filterStatus) {
+      filtered = filtered.filter((item) => item.conditionTasks === filterStatus);
     }
 
     // Сортировка

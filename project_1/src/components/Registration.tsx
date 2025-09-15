@@ -124,7 +124,7 @@ const Registration = () => {
         <div
           className={`shadow-lg w-[400px] item-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 rounded-4xl max-w-sm mx-auto p-6 outline-black/5 bg-opacity-50 ${colorBase} ${colorShadow}`}
         >
-          <h1 className="text-center font-semibold text-3xl -mt-[20px]">Registration</h1>
+          <h1 className="text-center font-semibold text-3xl -mt-[20px]">Регистрация</h1>
           <div className={`flex flex-col `}>
             <>
               <div className={`my-3`}>
@@ -218,7 +218,7 @@ const Registration = () => {
               </div>
             </>
             <>
-              <h2 className="text-2xl font-semibold mb-4">Email</h2>
+              <h2 className="text-2xl font-semibold mb-4">Почта</h2>
               <div className="relative">
                 <input
                   type="email"
@@ -234,7 +234,7 @@ const Registration = () => {
                 {error && <p className="absolute text-red-500 -mt-[20px]">{error.email}</p>}
               </div>
 
-              <h2 className="text-2xl font-semibold mb-4">Login</h2>
+              <h2 className="text-2xl font-semibold mb-4">Возраст</h2>
               <input
                 name="title"
                 type="title"
@@ -247,7 +247,7 @@ const Registration = () => {
                 minLength={0}
               />
 
-              <h2 className="text-2xl font-semibold mb-4">Password</h2>
+              <h2 className="text-2xl font-semibold mb-4">Пароль</h2>
 
               <input
                 name="password"
@@ -278,10 +278,10 @@ const Registration = () => {
           </div>
 
           <MyButton className={`mt-10 btn btn-soft w-full text-2xl `} type="submit" color="blue">
-            Log
+            Продолжить
           </MyButton>
           <NavLink to="/signin">
-            <p className=" text-gray-600/100 dark:text-gray-600/200">Login in</p>
+            <p className=" text-gray-600/100 dark:text-gray-600/200">Войти</p>
           </NavLink>
         </div>
       </form>

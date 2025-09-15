@@ -1,5 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { activEditorAPI, addNewTaskAPI, fetchTodosAPI, saveEditorAPI } from '../../API/todoAPI';
+import {
+  activEditorAPI,
+  activFulfielledAPI,
+  activRejectedAPI,
+  addNewTaskAPI,
+  fetchTodosAPI,
+  saveEditorAPI,
+} from '../../API/todoAPI';
 import type { SaveEditorParams } from '../../type/type';
 
 export const fetchTodos = createAsyncThunk(
@@ -52,3 +59,31 @@ export const addNewTask = createAsyncThunk(
     }
   }
 );
+
+//
+
+export const activFulfielled = createAsyncThunk('todo/activFulfielled', async ({ id }: SaveEditorParams, thunkAPI) => {
+  try {
+    // Выполняем запрос на сервер (обновление поста)
+    await activFulfielledAPI(id);
+
+    // Возвращаем только необходимые данные (id, title, text) для обновления состояния в Redux
+    return { id };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const activRejected = createAsyncThunk('todo/activRejected', async ({ id }: SaveEditorParams, thunkAPI) => {
+  try {
+    // Выполняем запрос на сервер (обновление поста)
+    await activRejectedAPI(id);
+
+    // Возвращаем только необходимые данные (id, title, text) для обновления состояния в Redux
+    return { id };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    return thunkAPI.rejectWithValue(message);
+  }
+});

@@ -27,7 +27,7 @@ const ViewTasks = () => {
   };
 
   // Обработчик для установки фильтра
-  const handleFilterClick = (status: string) => {
+  const handleFilterClick = (status: 'pending' | 'fulfilled' | 'rejected') => {
     dispatch(setFilterStatus(status));
   };
 

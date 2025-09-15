@@ -78,10 +78,6 @@ const userSlice = createSlice({
         state.loading = 'succeeded';
         state.error = null;
       })
-      .addCase(userNewRegister.rejected, (state, action) => {
-        state.loading = 'failed';
-        state.error = action.error.message || 'Unknown error';
-      })
 
       .addCase(userAccessTokenLife.pending, (state) => {
         state.loading = 'loading';
@@ -91,12 +87,6 @@ const userSlice = createSlice({
         localStorage.setItem('accessToken', action.payload.accessToken); // всё ещё нужен accessToken для авторизации
         state.loading = 'succeeded';
         state.error = null;
-      })
-      .addCase(userAccessTokenLife.rejected, (state, action) => {
-        state.loading = 'failed';
-        localStorage.removeItem('accessToken');
-        state.user.isAuth = false;
-        state.error = action.error.message || 'Unknown error';
       })
 
       .addCase(userAccessImage.pending, (state) => {
@@ -108,11 +98,6 @@ const userSlice = createSlice({
         state.user.cover = action.payload.image.cover;
         state.loading = 'succeeded';
         state.error = null;
-      })
-      .addCase(userAccessImage.rejected, (state, action) => {
-        state.loading = 'failed';
-        state.user.isAuth = false;
-        state.error = action.error.message || 'Unknown error';
       })
 
       .addCase(userLogin.pending, (state) => {
@@ -143,11 +128,6 @@ const userSlice = createSlice({
         state.loading = 'succeeded';
         state.error = null;
       })
-      .addCase(userLogin.rejected, (state, action) => {
-        state.loading = 'failed';
-        console.log('Ответ от API с токенами:', action.payload);
-        state.error = action.error.message || 'Unknown error';
-      })
 
       .addCase(logoutUser.pending, (state) => {
         state.loading = 'loading';
@@ -169,6 +149,20 @@ const userSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = 'failed';
         state.error = action.error.message || 'Unknown error';
+      })
+      .addCase(userLogin.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = (action.payload as string) || 'Unknown error';
+      })
+
+      .addCase(userNewRegister.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = (action.payload as string) || 'Unknown error';
+      })
+
+      .addCase(userAccessImage.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = (action.payload as string) || 'Unknown error';
       });
   },
 });

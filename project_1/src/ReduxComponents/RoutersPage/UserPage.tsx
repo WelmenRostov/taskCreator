@@ -6,6 +6,7 @@ import TaskList from '../TaskList';
 import TaskForm from '../../components/TaskForm';
 import Profile from '../../components/Profile';
 import { PaginationR } from '../PaginationR';
+import Error404Page from './Error404Page';
 
 const UserPage = () => {
   return (
@@ -29,25 +30,16 @@ const UserPage = () => {
                 </>
               }
             />
-            {/*<Route
+            <Route
               path="tasks"
               element={
                 <>
-                  <div className="relative bg-indigo-500 shadow-lg shadow-indigo-500/50 border-2 border-indigo-600 rounded-b-[1vw] pl-3 pr-2 outline-black/5 dark:bg-gray-800 bg-opacity-10 h-auto w-auto overflow-hidden mb-[20px]">
-                    <Suspense
-                      fallback={
-                        <div className="flex justify-center items-center mt-10 mb-10">
-                          <span className="w-[100px] loading loading-spinner loading-xl"></span>
-                        </div>
-                      }
-                    >
-                      <PostList />
-                    </Suspense>
+                  <div className="relative bg-indigo-500 shadow-lg shadow-indigo-500/50 border-2 border-indigo-600 rounded-b-[1vw]  outline-black/5 dark:bg-gray-800 bg-opacity-10 h-auto w-auto overflow-hidden mb-[20px]">
+                    <Error404Page />
                   </div>
-                  <TaskForm />
                 </>
               }
-            />*/}
+            />
             <Route
               path="profile"
               element={

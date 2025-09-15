@@ -7,7 +7,6 @@ export function PaginationR() {
   const dispatch = useDispatch<AppDispatch>();
   const { page, limit, totalPages, filterStatus } = useSelector((state: RootState2) => state.todo);
 
-  // Приводим к типу, который ожидает fetchTodos
   const filter: 'pending' | 'fulfilled' | 'rejected' =
     filterStatus === 'pending' || filterStatus === 'fulfilled' || filterStatus === 'rejected'
       ? filterStatus
