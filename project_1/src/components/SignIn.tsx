@@ -12,6 +12,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const loading = useSelector((state: RootState) => state.user.loading);
+  const isAuth = useSelector((state: RootState) => state.user.user.isAuth);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const error = useSelector((state: RootState) => state.user.error);
@@ -31,10 +32,10 @@ const SignIn = () => {
 
   console.log(error, 'error');
   useEffect(() => {
-    if (loading === 'succeeded' && error === null) {
+    if (loading === 'succeeded' && error === null && isAuth) {
       navigate('/user/profile');
     }
-  }, [loading, navigate]);
+  }, [loading, error, isAuth, navigate]);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidEmail = emailRegex.test(email);

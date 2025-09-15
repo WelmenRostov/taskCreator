@@ -3,10 +3,12 @@ import { useDispatch } from 'react-redux';
 import { logoutUser } from '../ReduxComponents/features/user/userThunk';
 import type { AppDispatch } from '../app/store';
 import { useLocalStorageCleaner } from '../ReduxComponents/hooks/useLocalStorageCleaner';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useLoadUser();
+  const navigate = useNavigate();
   const { clearStorage } = useLocalStorageCleaner();
 
   // Функция выхода
@@ -14,6 +16,7 @@ const Header = () => {
     console.log('logout');
     clearStorage();
     dispatch(logoutUser());
+    navigate('/signin');
   };
 
   return (

@@ -5,6 +5,7 @@ import {
   refreshAccessTokenAPI,
   registeringNewUserAPI,
   loginUserAPI,
+  userPasswordUpdateAPI,
 } from '../../API/authAPI';
 import { AxiosError } from 'axios';
 import type { UserType } from './authSlice';
@@ -17,11 +18,9 @@ export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWith
 
     // Возвращаем null, чтобы сбросить состояние пользователя
     return null;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      return rejectWithValue(error.response?.data?.message || 'Error logout user');
-    }
-    return rejectWithValue('Failed to logout');
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error.response?.data?.message || 'Ошибка входа');
   }
 });
 
@@ -33,6 +32,27 @@ export const userNewRegister = createAsyncThunk('user/register', async (userData
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       return rejectWithValue(error.response?.data?.message || 'Error registering user');
+    }
+    return rejectWithValue('Unknown error occurred');
+  }
+});
+
+interface PasswordUpdatePayload {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export const userPasswordUpdate = createAsyncThunk<
+  any,
+  PasswordUpdatePayload, // тип payload
+  { rejectValue: string }
+>('user/passwordUpdate', async ({ oldPassword, newPassword }, { rejectWithValue }) => {
+  try {
+    const response = await userPasswordUpdateAPI({ oldPassword, newPassword });
+    return response;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      return rejectWithValue(error.response?.data?.message || 'Error updating password');
     }
     return rejectWithValue('Unknown error occurred');
   }
@@ -87,7 +107,6 @@ export const userAccessImage = createAsyncThunk<{ image: UserImageData }, number
     try {
       console.log('Запрос изображения для id:', id);
       const response = await accessImageAPI(id);
-      console.log('оно?', response);
       const rawUser = localStorage.getItem('user');
       if (!rawUser) {
         // Если пользователя нет, то просто возвращаем данные
@@ -108,11 +127,9 @@ export const userAccessImage = createAsyncThunk<{ image: UserImageData }, number
       return {
         image: response.data,
       };
-    } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data?.message || 'Ошибка получения image');
-      }
-      return rejectWithValue('Unknown error occurred');
+    } catch (err: unknown) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки изображения');
     }
   }
 );

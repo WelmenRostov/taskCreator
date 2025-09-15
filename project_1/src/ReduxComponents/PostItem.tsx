@@ -63,7 +63,7 @@ const PostItem = ({
           transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
           <div
-            className={`rounded-[1vw] mb-5 p-5 outline-black/5 bg-opacity-10 overflow-hidden resize-none bg-red-700/50 shadow-lg shadow-red-800/90 border-2 border-red-800/40`}
+            className={`rounded-[1vw] mb-5 p-5 outline-black/5 bg-opacity-10 overflow-hidden resize-none bg-red-700/50 shadow-lg shadow-red-700/80 border-2 border-red-700`}
           >
             <h1 className="break-words text-[30px] flex items-start">
               {order}.

@@ -1,8 +1,14 @@
-import { AxiosError } from 'axios';
 import api from '../features/interceptor';
 
 export const registeringNewUserAPI = async (userData: FormData) => {
   const response = await api.post(`/auth/register`, userData);
+  return response.data;
+};
+
+export const userPasswordUpdateAPI = async (userData: { oldPassword: string; newPassword: string }) => {
+  const response = await api.post(`/auth/change-password`, userData, {
+    withCredentials: true,
+  });
   return response.data;
 };
 
@@ -23,16 +29,6 @@ export const refreshAccessTokenAPI = () =>
     });
 
 export const accessImageAPI = async (id: number) => {
-  try {
-    const response = await api.get(`/auth/image/${id}`);
-    return response.data;
-  } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      throw new Error(error.response?.data?.message || 'Error fetching user image');
-    } else if (error instanceof Error) {
-      throw new Error(error.message || 'Unknown error occurred');
-    } else {
-      throw new Error('An unexpected error occurred');
-    }
-  }
+  const response = await api.get(`/auth/image/${id}`);
+  return response.data;
 };

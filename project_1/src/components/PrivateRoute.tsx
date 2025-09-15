@@ -12,12 +12,13 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   useEffect(() => {
     const checkToken = async () => {
       try {
-        const token = localStorage.getItem('accessToken') || 'undefined';
-        if (!token) return setIsValid(false);
+        const token = localStorage.getItem('accessToken');
+        if (!token || token === 'undefined' || token === 'null') {
+          setIsValid(false);
+          return;
+        }
 
         await accessTokenLifeAPI();
-
-        localStorage.setItem('accessToken', token);
         setIsValid(true);
       } catch (error) {
         console.log('Access token недействителен. Пробуем обновить...', error);

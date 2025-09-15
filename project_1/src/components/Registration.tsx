@@ -9,6 +9,7 @@ import type { AppDispatch, RootState } from '../app/store';
 interface Errors {
   email?: string;
   password?: string;
+  age?: string;
   password_confirmation?: string;
   repeatPassword?: string;
 }
@@ -22,6 +23,7 @@ const Registration = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [agePreview, setAge] = useState<string>('');
 
   const [error, setError] = useState<Errors>({
     email: '',
@@ -80,6 +82,7 @@ const Registration = () => {
     // Добавляем обычные поля
     formData.append('email', email);
     formData.append('password', password);
+    formData.append('age', agePreview);
     formData.append('login', email.split('@')[0]);
 
     if (profileRef.current?.files?.[0]) {
@@ -95,14 +98,11 @@ const Registration = () => {
     }
     dispatch(userNewRegister(formData));
   };
-
   useEffect(() => {
     if (loading === 'succeeded') {
       navigate('/user/profile');
     }
   }, [loading, navigate]);
-
-  const login = email.split('@')[0];
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidEmail = emailRegex.test(email);
@@ -234,16 +234,15 @@ const Registration = () => {
                 {error && <p className="absolute text-red-500 -mt-[20px]">{error.email}</p>}
               </div>
 
-              <h2 className="text-2xl font-semibold mb-4">Возраст</h2>
+              <h2 className="text-2xl font-semibold mb-4">Дата рождения</h2>
               <input
-                name="title"
-                type="title"
-                className={`
-                  'w-full p-3 mb-4 rounded-lg border-2 border-gray-600 dark:border-indigo-600 dark:focus:ring-blue-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50
-                  '
-                `}
-                value={login}
-                readOnly
+                type="date"
+                name="ageDate"
+                onChange={(e) => setAge(e.target.value)}
+                required
+                className={`w-full p-3 mb-4 rounded-lg border-2 border-gray-600 dark:border-indigo-600 dark:focus:ring-blue-400 focus:outline-none focus:ring-2 focus:ring-yellow-500`}
+                placeholder=""
+                maxLength={35}
                 minLength={0}
               />
 
@@ -258,7 +257,7 @@ const Registration = () => {
     focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
                 placeholder="Password..."
                 maxLength={30}
-                minLength={0}
+                minLength={6}
               />
               <div className="relative">
                 <input
@@ -270,7 +269,7 @@ const Registration = () => {
     focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
                   placeholder="Repeat the password..."
                   maxLength={30}
-                  minLength={0}
+                  minLength={6}
                 />
                 {error && <p className="absolute text-red-500 -mt-[20px]">{error.repeatPassword}</p>}
               </div>

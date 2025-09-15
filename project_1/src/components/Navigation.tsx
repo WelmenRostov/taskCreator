@@ -25,7 +25,7 @@ const Navigation = () => {
               <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Задачи</MyButton>
             )}
           </NavLink>
-          <NavLink to="/registration">
+          <NavLink to="/user/tasks">
             {({ isActive }) => (
               <MyButton className={`btn btn-soft ${isActive ? 'dark:bg-indigo-700' : ''}`}>Информация</MyButton>
             )}

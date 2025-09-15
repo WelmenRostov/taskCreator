@@ -17,6 +17,7 @@ const ViewTasks = () => {
     setShowAddForm(!showAddForm);
     e.preventDefault();
   };
+
   const handlePostTask = (e: React.FormEvent) => {
     dispatch(addNewTask({ title, text })); // передаём объект
     setShowAddForm(false); // закрываем форму
