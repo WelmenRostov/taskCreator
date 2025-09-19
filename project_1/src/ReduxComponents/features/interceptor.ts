@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3002'; // твой бэкенд
+const API_URL = 'https://welmenrostov.ru/servers/todo-backend-core-05'; // твой бэкенд
 
 // Создаём экземпляр axios
 const api = axios.create({
@@ -24,8 +24,13 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Если получили 401 и ещё не пытались рефрешить
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Если ошибка 401 и это не запрос на /auth/login или /auth/register
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes('/auth/login') &&
+      !originalRequest.url.includes('/auth/register')
+    ) {
       originalRequest._retry = true;
 
       try {

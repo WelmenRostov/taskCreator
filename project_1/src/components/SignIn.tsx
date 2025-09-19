@@ -3,7 +3,7 @@ import MyButton from './UI/button/MyButton';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { colorBase, colorShadow, fonColor } from '../ReduxComponents/type/type';
 import { userLogin } from '../ReduxComponents/features/user/userThunk';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../app/store';
 import { setError } from '../ReduxComponents/features/user/authSlice';
@@ -11,31 +11,40 @@ import { setError } from '../ReduxComponents/features/user/authSlice';
 const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  
+  // Мемоизированные селекторы
   const loading = useSelector((state: RootState) => state.user.loading);
   const isAuth = useSelector((state: RootState) => state.user.user.isAuth);
+  const error = useSelector((state: RootState) => state.user.error);
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const error = useSelector((state: RootState) => state.user.error);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const hasNavigated = useRef(false);
+  
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
     const userData = { email, password };
     dispatch(setError(null));
     dispatch(userLogin(userData));
-  };
+  }, [email, password, dispatch]);
 
-  const hundleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const hundleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     dispatch(setError(null));
-  };
+  }, [dispatch]);
 
-  console.log(error, 'error');
-  useEffect(() => {
-    if (loading === 'succeeded' && error === null && isAuth) {
+  // Мемоизированная функция навигации
+  const handleNavigation = useCallback(() => {
+    if (loading === 'succeeded' && error === null && isAuth && !hasNavigated.current) {
+      hasNavigated.current = true;
       navigate('/user/profile');
     }
   }, [loading, error, isAuth, navigate]);
+
+  useEffect(() => {
+    handleNavigation();
+  }, [handleNavigation]);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidEmail = emailRegex.test(email);

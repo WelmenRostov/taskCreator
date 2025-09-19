@@ -105,7 +105,6 @@ export const userAccessImage = createAsyncThunk<{ image: UserImageData }, number
   'user/accessImage',
   async (id, { rejectWithValue }) => {
     try {
-      console.log('Запрос изображения для id:', id);
       const response = await accessImageAPI(id);
       const rawUser = localStorage.getItem('user');
       if (!rawUser) {
