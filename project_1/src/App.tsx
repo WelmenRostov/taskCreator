@@ -1,4 +1,6 @@
 import React from 'react';
+
+// Нда ну и жесть
 import Navigation from "./components/Navigation.tsx";
 import TaskForm from "./components/TaskForm.tsx";
 import PostList from "./components/PostList.tsx";
