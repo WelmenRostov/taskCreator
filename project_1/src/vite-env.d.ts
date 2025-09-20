@@ -35,3 +35,4 @@ declare module "*.webp" {
   export default content;
 }
 
+

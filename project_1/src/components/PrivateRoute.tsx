@@ -38,6 +38,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
         setIsValid(true);
       } catch (refreshError) {
         console.log('Refresh token не сработал, отправляем на логин', refreshError);
+        localStorage.removeItem('user')
         setIsValid(false);
       }
     } finally {
@@ -58,7 +59,8 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
   // Если не авторизован и не на публичном пути - редирект на signin
   if (isValid === false && !PublicPaths.includes(location.pathname)) {
-    return <Navigate to="/signin" state={{ from: location }} replace />;
+    localStorage.clear();
+    return <Navigate to="/signin" replace />;
   }
 
   return children;

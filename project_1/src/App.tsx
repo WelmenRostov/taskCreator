@@ -10,8 +10,8 @@ export const App: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route path="signin" element={<SignIn />} />
-        <Route path="registration" element={<Registration />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/registration" element={<Registration />} />
         <Route
           path="/user/*"
           element={

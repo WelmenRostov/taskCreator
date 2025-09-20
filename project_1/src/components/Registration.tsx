@@ -1,6 +1,6 @@
 import MyButton from './UI/button/MyButton';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { colorBase, colorShadow, fonColor } from '../ReduxComponents/type/type';
 import { useDispatch, useSelector } from 'react-redux';
 import { userNewRegister } from '../ReduxComponents/features/user/userThunk';
@@ -24,6 +24,7 @@ const Registration = () => {
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const [agePreview, setAge] = useState<string>('');
+  const hasNavigated = useRef(false);
 
   const [error, setError] = useState<Errors>({
     email: '',
@@ -98,11 +99,16 @@ const Registration = () => {
     }
     dispatch(userNewRegister(formData));
   };
-  useEffect(() => {
-    if (loading === 'succeeded') {
+  const handleNavigation = useCallback(() => {
+    if (loading === 'succeeded' && !hasNavigated.current) {
+      hasNavigated.current = true;
       navigate('/user/profile');
     }
   }, [loading, navigate]);
+
+  useEffect(() => {
+    handleNavigation();
+  }, [handleNavigation]);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidEmail = emailRegex.test(email);
