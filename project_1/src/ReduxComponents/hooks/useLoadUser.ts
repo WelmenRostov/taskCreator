@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { userAccessImage } from '../features/user/userThunk';
 import type { UserType } from '../features/user/authSlice';
