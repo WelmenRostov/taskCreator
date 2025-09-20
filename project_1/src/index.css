@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+
+@plugin "daisyui" {
+  themes: winter --default, night --prefersdark,
+  bumblebee;
+}
+@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+* {
+  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+*::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Opera */
+}
+/*
+
+input:focus {
+  outline: none; !* Убираем стандартную обводку *!
+  border: 2px solid red; !* Ставим свою обводку *!
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); !* Добавляем тень *!
+}
+
+@media (prefers-color-scheme: dark) {
+  input:focus {
+    outline: none;
+    border: 2px solid #3f04e1; !* Можно выбрать цвет, подходящий для темной темы *!
+    box-shadow: 0 0 5px rgba(107, 21, 174, 0.5); !* Тень для темной темы *!
+  }
+}
+
+input:focus-visible {
+   outline: none; !* Убираем стандартный контур *!
+   box-shadow: none; !* Убираем стандартную тень *!
+}*/
