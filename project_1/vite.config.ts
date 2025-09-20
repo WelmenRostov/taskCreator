@@ -10,3 +10,6 @@ export default defineConfig({
     sourcemap: true, // Включение source maps для отладки
   },
 });
+
+
+// новый ах важный коммент
