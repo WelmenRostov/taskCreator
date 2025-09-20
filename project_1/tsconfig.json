@@ -1,0 +1,13 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "jsx": "react-jsx",  // Это важный параметр для использования JSX в TypeScript
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": ["src"]
+}
