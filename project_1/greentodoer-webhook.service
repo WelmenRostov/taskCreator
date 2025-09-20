@@ -1,0 +1,16 @@
+[Unit]
+Description=GreenTodoer Webhook Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/path/to/your/website/projects/greentodoer
+ExecStart=/usr/bin/node /path/to/your/website/projects/greentodoer/deploy-webhook.js
+Restart=always
+RestartSec=10
+Environment=NODE_ENV=production
+Environment=WEBHOOK_SECRET=your-secret-key-here
+
+[Install]
+WantedBy=multi-user.target

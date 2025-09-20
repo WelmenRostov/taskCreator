@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [tailwindcss(), react()],
+  base: '/projects/greentodoer/',
   build: {
     outDir: 'dist', // Указание директории для сборки (по умолчанию 'dist')
     sourcemap: true, // Включение source maps для отладки

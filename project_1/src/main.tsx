@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')!).render(
       loading={<LoadSpinner />}
       persistor={persistor}
     >
-      <BrowserRouter>
+      <BrowserRouter basename="/projects/greentodoer">
         <App />
       </BrowserRouter>
     </PersistGate>
