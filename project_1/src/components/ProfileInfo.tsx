@@ -66,7 +66,7 @@ const ProfileInfo = () => {
         <div className="px-6 lg:max-w-7xl lg:px-8 ">
           <h2 className="text-base/7 font-semibold text-indigo-600">Информация о вас</h2>
           <div className={``}>
-            <p className={`text-3xl`}>Почта: {email}</p>
+            <p className={`text-3xl`}>Почта хуечта: {email}</p>
             <p className={`text-3xl`}>Логин: {login}</p>
             <p className={`text-3xl`}>Возраст: {age}</p>
             <p className={`text-3xl`}>Дата регистрации: {age}</p>
