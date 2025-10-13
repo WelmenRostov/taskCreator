@@ -3,11 +3,13 @@ import { useLoadUser } from '../ReduxComponents/hooks/useLoadUser';
 import LoadSpinner from './LoadSpinner';
 import Error404Page from '../ReduxComponents/RoutersPage/Error404Page';
 import ProfileInfo from './ProfileInfo';
+import { getUser } from '../ReduxComponents/services/getUser';
 
 const Profile = () => {
-  const { user, loading } = useLoadUser();
+  const { loading } = useLoadUser();
+  const user  = getUser();
+  console.log(user);
   if (loading) return <LoadSpinner />;
-
   if (!user)
     return (
       <>

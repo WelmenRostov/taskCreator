@@ -1,13 +1,13 @@
-import { useLoadUser } from '../ReduxComponents/hooks/useLoadUser';
-import { useDispatch } from 'react-redux';
+
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../ReduxComponents/features/user/userThunk';
-import type { AppDispatch } from '../app/store';
+import type { AppDispatch, RootState } from '../app/store';
 import { useLocalStorageCleaner } from '../ReduxComponents/hooks/useLocalStorageCleaner';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useLoadUser();
+  const user = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
   const { clearStorage } = useLocalStorageCleaner();
 

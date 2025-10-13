@@ -55,7 +55,7 @@ const SignIn = () => {
       <form onSubmit={handleSubmit}>
         <div className={` resize-none absolute top-0 left-0 w-full h-full ${fonColor}`}></div>
         <div
-          className={`${colorBase} ${colorShadow} w-[400px] item-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-indigo-600 rounded-4xl max-w-sm mx-auto p-6 outline-black/5 dark:bg-gray-800 bg-opacity-50`}
+          className={`${colorBase} ${colorShadow} w-[400px] item-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-indigo-600 rounded-4xl max-w-sm mx-auto p-6 outline-black/5 `}
         >
           <h2 className="text-2xl font-semibold mb-4">Почта</h2>
 

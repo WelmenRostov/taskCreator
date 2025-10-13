@@ -38,7 +38,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
         setIsValid(true);
       } catch (refreshError) {
         console.log('Refresh token не сработал, отправляем на логин', refreshError);
-        localStorage.removeItem('user')
+        localStorage.removeItem('persist:root')
         setIsValid(false);
       }
     } finally {

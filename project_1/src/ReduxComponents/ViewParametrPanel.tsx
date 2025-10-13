@@ -1,5 +1,4 @@
 import MySelect from '../components/UI/select/MySelect';
-import MyButton from '../components/UI/button/MyButton';
 import { colorBase } from './type/type';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSortBy, setLimit, setSearchText } from './features/todos/todoSlice';
@@ -11,9 +10,9 @@ const ParameterViewingPanel = () => {
   const sortBy = useSelector((state: RootState2) => state.todo.sortBy);
   const limit = useSelector((state: RootState2) => state.todo.limit);
   const [search, setSearch] = useState('');
-  const handleSearch = () => {
+  /*const handleSearch = () => {
     dispatch(setSearchText(search));
-  };
+  };*/
 
   useEffect(() => {
     dispatch(setSearchText(search));
@@ -49,16 +48,16 @@ const ParameterViewingPanel = () => {
       </div>
 
       {/* Поиск */}
-      <div className="flex justify-between items-center ml-[10px] m-2">
+      <div className="flex justify-between items-center mr-[0px] m-2">
         <input
           placeholder="Поиск..."
           className="min-w-[200px] rounded-[1vw] p-2 bg-indigo-800 text-white"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <MyButton additionalStyle=" btn btn-soft" onClick={handleSearch}>
+        {/*<MyButton additionalStyle=" btn btn-soft" onClick={handleSearch}>
           Поиск
-        </MyButton>
+        </MyButton>*/}
       </div>
     </div>
   );

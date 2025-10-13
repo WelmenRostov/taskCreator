@@ -8,7 +8,6 @@ import {
   userPasswordUpdateAPI,
 } from '../../API/authAPI';
 import { AxiosError } from 'axios';
-import type { UserType } from './authSlice';
 
 export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWithValue }) => {
   try {
@@ -27,7 +26,6 @@ export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWith
 export const userNewRegister = createAsyncThunk('user/register', async (userData: FormData, { rejectWithValue }) => {
   try {
     const response = await registeringNewUserAPI(userData);
-    console.log(response);
     return response;
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
@@ -103,30 +101,20 @@ type UserImageData = {
 
 export const userAccessImage = createAsyncThunk<{ image: UserImageData }, number, { rejectValue: string }>(
   'user/accessImage',
-  async (id, { rejectWithValue }) => {
+  async (id, { rejectWithValue}) => {
     try {
       const response = await accessImageAPI(id);
-      const rawUser = localStorage.getItem('user');
+      const rawUser = localStorage.getItem('persist:root');
       if (!rawUser) {
+
         // Если пользователя нет, то просто возвращаем данные
         return { image: response };
       }
-
-      const parsed = JSON.parse(rawUser) as UserType;
-
-      // Обновляем profile и cover в объекте user
-      const user = {
-        ...parsed,
-        profile: response.profile ?? parsed.profile,
-        cover: response.cover ?? parsed.cover,
-      };
-
-      // Сохраняем обновлённого пользователя обратно в localStorage
-      localStorage.setItem('user', JSON.stringify(user));
       return {
-        image: response.data,
+        image: response,
       };
     } catch (err: unknown) {
+
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки изображения');
     }

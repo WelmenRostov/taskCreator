@@ -25,6 +25,7 @@ const Registration = () => {
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const [agePreview, setAge] = useState<string>('');
   const hasNavigated = useRef(false);
+  const isAuth = useSelector((state: RootState) => state.user.user.isAuth);
 
   const [error, setError] = useState<Errors>({
     email: '',
@@ -100,11 +101,11 @@ const Registration = () => {
     dispatch(userNewRegister(formData));
   };
   const handleNavigation = useCallback(() => {
-    if (loading === 'succeeded' && !hasNavigated.current) {
+    if (loading === 'succeeded' && !error && isAuth && !hasNavigated.current) {
       hasNavigated.current = true;
       navigate('/user/profile');
     }
-  }, [loading, navigate]);
+  }, [loading, error, isAuth, navigate]);
 
   useEffect(() => {
     handleNavigation();
@@ -136,13 +137,13 @@ const Registration = () => {
               <div className={`my-3`}>
                 <div
                   style={{
-                    backgroundImage: `url(${coverPreview || 'https://wallpaper.feodosia.net/media/wallpaper/landscape/95099-2908x1323.jpg'})`,
+                    backgroundImage: `url(${coverPreview || 'https://welmenrostov.ru/servers/todo-backend-core-05/uploads/profileDefoult.jpg'})`,
                   }}
                   className={` border-2 rounded-6xl w-full rounded-sm bg-cover bg-center bg-no-repeat items-center ${colorBase} ${colorShadow}`}
                 >
                   <div
                     style={{
-                      backgroundImage: `url(${profilePreview || 'https://i.pinimg.com/originals/cd/4e/1f/cd4e1f05e16939f18909e535463b0808.jpg'})`,
+                      backgroundImage: `url(${profilePreview || 'https://welmenrostov.ru/servers/todo-backend-core-05/uploads/avatarDefoult.jpg'})`,
                     }}
                     className="mx-auto flex justify-center w-[141px] h-[141px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat "
                   >

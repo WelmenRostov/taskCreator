@@ -62,7 +62,6 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(userNewRegister.fulfilled, (state, action) => {
-        console.log('Ответ от API с токенами:', action.payload);
 
         state.user = { ...action.payload };
 
@@ -80,7 +79,6 @@ const userSlice = createSlice({
               console.error('Ошибка при декодировании токена:', e);
             }
           }
-          localStorage.setItem('user', JSON.stringify(state.user));
         }
 
         state.loading = 'succeeded';
@@ -92,7 +90,6 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(userPasswordUpdate.fulfilled, (state, action) => {
-        console.log('Ответ от API с токенами:', action.payload);
 
         state.user = { ...action.payload };
 
@@ -110,7 +107,6 @@ const userSlice = createSlice({
               console.error('Ошибка при декодировании токена:', e);
             }
           }
-          localStorage.setItem('user', JSON.stringify(state.user));
         }
 
         state.loading = 'succeeded';
@@ -131,10 +127,8 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(userAccessImage.fulfilled, (state, action) => {
-        if (action.payload?.image) {
-          state.user.profile = action.payload.image.profile;
-          state.user.cover = action.payload.image.cover;
-        }
+        state.user.profile = action.payload.image.profile;
+        state.user.cover = action.payload.image.cover;
         state.loading = 'succeeded';
         state.error = null;
       })
@@ -144,7 +138,6 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(userLogin.fulfilled, (state, action) => {
-        console.log('Ответ от API с токенами:', action.payload);
 
         state.user = { ...action.payload };
 
@@ -161,7 +154,6 @@ const userSlice = createSlice({
               console.error('Ошибка при декодировании токена:', e);
             }
           }
-          localStorage.setItem('user', JSON.stringify(state.user));
         }
 
         state.loading = 'succeeded';

@@ -1,21 +1,18 @@
 import { colorBase } from '../ReduxComponents/type/type';
-import { useLoadUser } from '../ReduxComponents/hooks/useLoadUser';
 import MyButton from './UI/button/MyButton';
 import { useState } from 'react';
 import { userPasswordUpdate } from '../ReduxComponents/features/user/userThunk';
-import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '../app/store';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../app/store';
 
 const ProfileInfo = () => {
-  const { user } = useLoadUser();
+  const { user } = useSelector((state: RootState) => state.user);
   const [showAddForm, setShowAddForm] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const rUser = localStorage.getItem('persist:root');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [NewPasswordRepeat, setNewPasswordRepeat] = useState('');
 
-  console.log(rUser);
 
   const handleAddClick = (e: React.FormEvent) => {
     e.preventDefault();

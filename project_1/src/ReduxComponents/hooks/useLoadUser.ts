@@ -14,18 +14,31 @@ export const useLoadUser = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const raw = localStorage.getItem('user');
+        const raw = localStorage.getItem('persist:root');
         if (!raw) {
           setUser(null);
           setLoading(false);
           return;
         }
 
-        const parsed = JSON.parse(raw) as UserType;
-        setUser(parsed);
-        if (!parsed.cover || !parsed.profile) {
-          await dispatch(userAccessImage(parsed.id!));
+        const parsed = JSON.parse(raw); // объект с ключами user, odo, _persist
+        const userStr = parsed.user;
+
+        if (!userStr) {
+          setUser(null);
+          setLoading(false);
+          return;
         }
+
+        const userParsed = JSON.parse(userStr); // объект со структурой { user: { ... }, loading, error }
+        const userObj = userParsed.user;
+
+        setUser(userObj);
+
+        if ((!userParsed.cover || !userParsed.profile) && userObj?.id) {
+          await dispatch(userAccessImage(userObj.id));
+        }
+
         setLoading(false);
       } catch (err) {
         console.error('Ошибка при загрузке пользователя:', err);
