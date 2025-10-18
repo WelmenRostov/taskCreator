@@ -7,6 +7,7 @@ import TaskForm from '../../components/TaskForm';
 import Profile from '../../components/Profile';
 import { PaginationR } from '../PaginationR';
 import Error404Page from './Error404Page';
+import Timer from '../../components/Timer';
 
 const UserPage = () => {
   return (
@@ -45,6 +46,16 @@ const UserPage = () => {
               element={
                 <div className={` ${colorBase} ${colorShadow} rounded-b-[1vw] border-t-0  mb-[20px] pb-5 h-auto`}>
                   <Profile />
+                </div>
+              }
+            />
+            <Route
+              path="timer"
+              element={
+                <div className={`relative bg-indigo-500 shadow-lg shadow-indigo-500/50 border-2 border-indigo-600 rounded-b-[1vw]  outline-black/5 dark:bg-gray-800 bg-opacity-10 h-auto w-auto overflow-hidden mb-[20px]`}>
+                  <Activity>
+                    <Timer/>
+                  </Activity>
                 </div>
               }
             />
